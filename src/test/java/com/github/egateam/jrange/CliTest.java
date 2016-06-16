@@ -4,7 +4,7 @@
  * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
  */
 
-package com.github.egateam;
+package com.github.egateam.jrange;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class JRangeTest {
+public class CliTest {
     // Store the original standard out before changing it.
     private final PrintStream           originalStdout = System.out;
     private final PrintStream           originalStderr = System.err;
@@ -31,7 +31,7 @@ public class JRangeTest {
     @Test(description = "Test no command")
     public void testMain() throws Exception {
         String[] args = {};
-        JRange.main(args);
+        Cli.main(args);
 
         Assert.assertTrue(
             this.stderrContent.toString().contains("No command specified"),
@@ -42,7 +42,7 @@ public class JRangeTest {
     @Test(description = "Test usage")
     public void testUsage() throws Exception {
         String[] args = {"--help"};
-        JRange.main(args);
+        Cli.main(args);
 
         Assert.assertTrue(
             this.stdoutContent.toString().contains("Options:"),
@@ -53,7 +53,7 @@ public class JRangeTest {
     @Test(description = "Test non-existing")
     public void testNonExisting() throws Exception {
         String[] args = {"non-existing"};
-        JRange.main(args);
+        Cli.main(args);
 
         Assert.assertTrue(
             this.stderrContent.toString().contains("Expected a command"),

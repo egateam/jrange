@@ -18,17 +18,17 @@
  * @since 1.7
  */
 
-package com.github.egateam;
+package com.github.egateam.jrange;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
-import com.github.egateam.commands.*;
+import com.github.egateam.IntSpanBenchmark;
 
 @SuppressWarnings("WeakerAccess")
 @Parameters
-public class JRange {
+public class Cli {
     /**
      * The only global option
      */
@@ -114,6 +114,6 @@ public class JRange {
     }
 
     public static void main(String[] args) throws Exception {
-        new JRange().execute(args);
+        new Cli().execute(args);
     }
 }

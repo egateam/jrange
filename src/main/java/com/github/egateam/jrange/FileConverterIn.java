@@ -4,7 +4,7 @@
  * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
  */
 
-package com.github.egateam.util;
+package com.github.egateam.jrange;
 
 import com.beust.jcommander.IStringConverter;
 

@@ -4,10 +4,8 @@
  * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
  */
 
-package com.github.egateam.commands;
+package com.github.egateam.jrange;
 
-import com.github.egateam.JRange;
-import com.github.egateam.commons.Utils;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,7 +31,7 @@ public class MergeTest {
     @Test
     public void testMergeFailed() throws Exception {
         String[] args = {"merge"};
-        JRange.main(args);
+        Cli.main(args);
 
         Assert.assertTrue(this.stderrContent.toString().contains("Main parameters are required"),
             "Except parameters");
@@ -43,7 +41,7 @@ public class MergeTest {
 //    public void testExecute() throws Exception {
 //        String fileName1 = Utils.expendResource("I.yml");
 //        String[] args = {"merge", fileName1, "--outfile", "stdout"};
-//        JRange.main(args);
+//        Cli.main(args);
 //
 //        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 5, "line count");
 //        Assert.assertTrue(this.stdoutContent.toString().contains("28547-29194"), "runlist exists");
