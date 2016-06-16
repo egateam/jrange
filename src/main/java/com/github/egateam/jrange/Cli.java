@@ -24,7 +24,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
-import com.github.egateam.IntSpanBenchmark;
 
 @SuppressWarnings("WeakerAccess")
 @Parameters
@@ -37,11 +36,13 @@ public class Cli {
     private boolean help = false;
 
     private static String getJarName() {
-        return new java.io.File(IntSpanBenchmark.class.getProtectionDomain()
-            .getCodeSource()
-            .getLocation()
-            .getPath())
-            .getName();
+        return new java.io.File(
+            Cli.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .getPath()
+        ).getName();
     }
 
     public void execute(String[] args) {
