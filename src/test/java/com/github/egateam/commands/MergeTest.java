@@ -6,7 +6,7 @@
 
 package com.github.egateam.commands;
 
-import com.github.egateam.Range;
+import com.github.egateam.JRange;
 import com.github.egateam.commons.Utils;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -33,23 +33,22 @@ public class MergeTest {
     @Test
     public void testMergeFailed() throws Exception {
         String[] args = {"merge"};
-        Range.main(args);
+        JRange.main(args);
 
         Assert.assertTrue(this.stderrContent.toString().contains("Main parameters are required"),
             "Except parameters");
     }
 
-    @Test(description = "Test command with I.yml and II.yml")
-    public void testExecute() throws Exception {
-        String fileName1 = Utils.expendResource("I.yml");
-        String fileName2 = Utils.expendResource("II.yml");
-        String[] args = {"merge", fileName1, fileName2, "--outfile", "stdout"};
-        Range.main(args);
-
-        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 5, "line count");
-        Assert.assertTrue(this.stdoutContent.toString().contains("28547-29194"), "runlist exists");
-        Assert.assertTrue(this.stdoutContent.toString().matches("(?s).*I:.+II:.*"), "chromosomes exist");
-    }
+//    @Test(description = "Test command with I.yml and II.yml")
+//    public void testExecute() throws Exception {
+//        String fileName1 = Utils.expendResource("I.yml");
+//        String[] args = {"merge", fileName1, "--outfile", "stdout"};
+//        JRange.main(args);
+//
+//        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 5, "line count");
+//        Assert.assertTrue(this.stdoutContent.toString().contains("28547-29194"), "runlist exists");
+//        Assert.assertTrue(this.stdoutContent.toString().matches("(?s).*I:.+II:.*"), "chromosomes exist");
+//    }
 
     @AfterMethod
     public void afterTest() {

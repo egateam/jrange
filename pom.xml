@@ -73,7 +73,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.egateam.Range</mainClass>
+                            <mainClass>com.github.egateam.JRange</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

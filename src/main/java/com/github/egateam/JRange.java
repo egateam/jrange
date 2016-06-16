@@ -28,7 +28,7 @@ import com.github.egateam.commands.*;
 
 @SuppressWarnings("WeakerAccess")
 @Parameters
-public class Range {
+public class JRange {
     /**
      * The only global option
      */
@@ -114,6 +114,6 @@ public class Range {
     }
 
     public static void main(String[] args) throws Exception {
-        new Range().execute(args);
+        new JRange().execute(args);
     }
 }

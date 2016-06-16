@@ -14,12 +14,12 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class RangeTest {
+public class JRangeTest {
     // Store the original standard out before changing it.
-    private final PrintStream originalStdout = System.out;
-    private final PrintStream originalStderr = System.err;
-    private ByteArrayOutputStream stdoutContent = new ByteArrayOutputStream();
-    private ByteArrayOutputStream stderrContent = new ByteArrayOutputStream();
+    private final PrintStream           originalStdout = System.out;
+    private final PrintStream           originalStderr = System.err;
+    private       ByteArrayOutputStream stdoutContent  = new ByteArrayOutputStream();
+    private       ByteArrayOutputStream stderrContent  = new ByteArrayOutputStream();
 
     @BeforeMethod
     public void beforeTest() {
@@ -31,25 +31,34 @@ public class RangeTest {
     @Test(description = "Test no command")
     public void testMain() throws Exception {
         String[] args = {};
-        Range.main(args);
+        JRange.main(args);
 
-        Assert.assertTrue(this.stderrContent.toString().contains("No command specified"), "No command");
+        Assert.assertTrue(
+            this.stderrContent.toString().contains("No command specified"),
+            "No command"
+        );
     }
 
     @Test(description = "Test usage")
     public void testUsage() throws Exception {
         String[] args = {"--help"};
-        Range.main(args);
+        JRange.main(args);
 
-        Assert.assertTrue(this.stdoutContent.toString().contains("Options:"), "Usage");
+        Assert.assertTrue(
+            this.stdoutContent.toString().contains("Options:"),
+            "Usage"
+        );
     }
 
     @Test(description = "Test non-existing")
     public void testNonExisting() throws Exception {
         String[] args = {"non-existing"};
-        Range.main(args);
+        JRange.main(args);
 
-        Assert.assertTrue(this.stderrContent.toString().contains("Expected a command"), "Non-existing command");
+        Assert.assertTrue(
+            this.stderrContent.toString().contains("Expected a command"),
+            "Non-existing command"
+        );
     }
 
     @AfterMethod

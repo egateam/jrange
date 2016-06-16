@@ -9,12 +9,9 @@ package com.github.egateam.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.util.FileConverterIn;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @SuppressWarnings({"CanBeFinal"})
 @Parameters(commandDescription = "Merge runlist yaml files")
