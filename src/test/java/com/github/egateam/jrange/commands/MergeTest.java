@@ -4,8 +4,9 @@
  * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
  */
 
-package com.github.egateam.jrange;
+package com.github.egateam.jrange.commands;
 
+import com.github.egateam.jrange.Cli;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

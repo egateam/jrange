@@ -4,10 +4,11 @@
  * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
  */
 
-package com.github.egateam.jrange;
+package com.github.egateam.jrange.commands;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.github.egateam.jrange.FileConverterIn;
 
 import java.io.File;
 import java.util.List;
