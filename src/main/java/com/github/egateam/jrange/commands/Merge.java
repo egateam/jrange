@@ -11,13 +11,13 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.commons.ChrRange;
 import com.github.egateam.commons.Utils;
-import org.apache.commons.io.IOUtils;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings({"CanBeFinal"})
 @Parameters(commandDescription = "Merge runlist yaml files")
@@ -55,21 +55,48 @@ public class Merge {
         //----------------------------
         // Loading
         //----------------------------
+
+        // store graph separately by chromosomes
+        Map<String, UndirectedGraph<String, DefaultEdge>> graphOfChr = new HashMap<>();
+
+        // cache chrRange
+        Map<String, ChrRange> objectOfRange = new HashMap<>();
+
         for ( String inFile : files ) {
             List<String> lines = Utils.readLines(inFile);
 
             for ( String line : lines ) {
                 for ( String part : line.split("\\t") ) {
                     ChrRange chrRange = new ChrRange(part);
-
                     if ( chrRange.isValid() ) {
-                        System.out.println(chrRange);
+                        chrRange.standardize(true);
+                        String range = chrRange.toString();
+                        if ( !objectOfRange.containsKey(range) ) {
+                            String chr = chrRange.getChr();
+                            if ( !graphOfChr.containsKey(chr) ) {
+                                graphOfChr.put(
+                                    chr,
+                                    new SimpleGraph<String, DefaultEdge>(DefaultEdge.class)
+                                );
+                            }
 
+                            objectOfRange.put(range, chrRange);
+                            graphOfChr.get(chr).addVertex(range);
+                        }
                     }
 
                 }
             }
         }
+
+        ArrayList<String> chrs = new ArrayList<>(graphOfChr.keySet());
+        Collections.sort(chrs);
+
+        for ( String chr : chrs ) {
+            System.out.println("Chromosome " + chr);
+            System.out.println(graphOfChr.get(chr));
+        }
+
 //
 //        //----------------------------
 //        // Output
