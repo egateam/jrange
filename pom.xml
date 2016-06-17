@@ -34,6 +34,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>0.9.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.egateam</groupId>
             <artifactId>jintspan</artifactId>
             <version>0.2.1</version>
@@ -42,7 +48,7 @@
         <dependency>
             <groupId>com.github.egateam</groupId>
             <artifactId>commons</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </dependency>
 
     </dependencies>

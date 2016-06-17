@@ -15,8 +15,9 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.beanshell:bsh:2.0b4" level="project" />
     <orderEntry type="library" name="Maven: com.beust:jcommander:1.48" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jgrapht:jgrapht-core:0.9.2" level="project" />
     <orderEntry type="library" name="Maven: com.github.egateam:jintspan:0.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.carrotsearch:hppc:0.7.1" level="project" />
-    <orderEntry type="library" name="Maven: com.github.egateam:commons:0.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.github.egateam:commons:0.0.4" level="project" />
   </component>
 </module>
