@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.*;
 
 @SuppressWarnings({"CanBeFinal"})
-@Parameters(commandDescription = "Merge runlist yaml files")
+@Parameters(commandDescription = "Merge overlapped ranges via overlapping graph")
 public class Merge {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
