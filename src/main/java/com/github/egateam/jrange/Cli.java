@@ -24,6 +24,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
+import com.github.egateam.jrange.commands.Connect;
 import com.github.egateam.jrange.commands.Merge;
 
 @SuppressWarnings("WeakerAccess")
@@ -50,7 +51,7 @@ public class Cli {
 
         JCommander jc = new JCommander(this);
         jc.addCommand("merge", new Merge());
-//        jc.addCommand("some", new Some());
+        jc.addCommand("connect", new Connect());
 //        jc.addCommand("span", new Span());
 //        jc.addCommand("split", new Split());
 //        jc.addCommand("stat", new Stat());
@@ -84,10 +85,10 @@ public class Cli {
             if ( command instanceof Merge ) {
                 Merge commandNew = (Merge) command;
                 commandNew.execute();
+            } else if ( command instanceof Connect ) {
+                Connect commandNew = (Connect) command;
+                commandNew.execute();
             }
-//            else if ( command instanceof Split ) {
-//                Split commandNew = (Split) command;
-//                commandNew.execute();
 //            } else if ( command instanceof Some ) {
 //                Some commandNew = (Some) command;
 //                commandNew.execute();
