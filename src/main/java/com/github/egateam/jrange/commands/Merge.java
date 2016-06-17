@@ -7,10 +7,16 @@
 package com.github.egateam.jrange.commands;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
-import com.github.egateam.jrange.FileConverterIn;
+import com.github.egateam.commons.ChrRange;
+import com.github.egateam.commons.Utils;
+import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 @SuppressWarnings({"CanBeFinal"})
@@ -18,19 +24,28 @@ import java.util.List;
 public class Merge {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @Parameter(description = "<infiles>", converter = FileConverterIn.class, required = true)
-    private List<File> files;
+    @Parameter(description = "<infiles>", required = true)
+    private List<String> files;
 
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
-    private void validateArgs() {
-//        if ( files.size() < 1 ) {
-//            throw new ParameterException("This command need one or more input files.");
-//        }
+    private void validateArgs() throws Exception {
+        if ( files.size() < 1 ) {
+            throw new ParameterException("This command need one or more input files.");
+        }
+
+        for ( String inFile : files ) {
+            if ( inFile.toLowerCase().equals("stdin") ) {
+                continue;
+            }
+            if ( !new File(inFile).isFile() ) {
+                throw new IOException(String.format("The input file [%s] doesn't exist.", inFile));
+            }
+        }
 
         if ( outfile == null ) {
-            outfile = files.get(0) + ".merge.yml";
+            outfile = files.get(0) + ".merge.tsv";
         }
     }
 
@@ -40,13 +55,21 @@ public class Merge {
         //----------------------------
         // Loading
         //----------------------------
-//        Map<String, Map<String, ?>> master = new HashMap<>();
-//        for ( File inFile : files ) {
-//            Map<String, ?> map = StaticUtils.readRl(inFile);
-//
-//            String basename = FilenameUtils.getBaseName(inFile.toString());
-//            master.put(basename, map);
-//        }
+        for ( String inFile : files ) {
+            List<String> lines = Utils.readLines(inFile);
+
+            for ( String line : lines ) {
+                for ( String part : line.split("\\t") ) {
+                    ChrRange chrRange = new ChrRange(part);
+
+                    if ( chrRange.isValid() ) {
+                        System.out.println(chrRange);
+
+                    }
+
+                }
+            }
+        }
 //
 //        //----------------------------
 //        // Output
