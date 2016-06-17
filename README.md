@@ -35,12 +35,6 @@ Oracle/Open JDK 1.7 or higher.
 ```bash
 mvn clean verify
 
-cat src/test/resources/I.links.tsv \
-    | perl -nla -F"\t" -e 'print $F[0]; print $F[1]' \
-    | java -jar target/jrange-*-jar-with-dependencies.jar \
-    merge -o stdout \
-    stdin
-    
 java -jar target/jrange-*-jar-with-dependencies.jar \
     merge -o stdout \
     src/test/resources/I.links.tsv

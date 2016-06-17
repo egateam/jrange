@@ -6,6 +6,7 @@
 
 package com.github.egateam.jrange.commands;
 
+import com.github.egateam.commons.Utils;
 import com.github.egateam.jrange.Cli;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -38,16 +39,15 @@ public class MergeTest {
             "Except parameters");
     }
 
-//    @Test(description = "Test command with I.yml and II.yml")
-//    public void testExecute() throws Exception {
-//        String fileName1 = Utils.expendResource("I.yml");
-//        String[] args = {"merge", fileName1, "--outfile", "stdout"};
-//        Cli.main(args);
-//
-//        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 5, "line count");
-//        Assert.assertTrue(this.stdoutContent.toString().contains("28547-29194"), "runlist exists");
-//        Assert.assertTrue(this.stdoutContent.toString().matches("(?s).*I:.+II:.*"), "chromosomes exist");
-//    }
+    @Test(description = "Test command with I.links.tsv")
+    public void testExecute() throws Exception {
+        String fileName1 = Utils.expendResource("I.links.tsv");
+        String[] args = {"merge", fileName1, "--outfile", "stdout"};
+        Cli.main(args);
+
+        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 6, "line count");
+        Assert.assertTrue(this.stdoutContent.toString().contains("13327-17227"), "runlist exists");
+    }
 
     @AfterMethod
     public void afterTest() {
