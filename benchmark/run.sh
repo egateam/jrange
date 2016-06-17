@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-cpanm App::RL App::Fasops
-
 COMMAND_TIME="command time -v"
 if [[ `uname` == 'Darwin' ]];
 then
