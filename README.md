@@ -38,6 +38,11 @@ mvn clean verify
 java -jar target/jrange-*-jar-with-dependencies.jar \
     merge -o stdout \
     src/test/resources/I.links.tsv
+
+java -jar target/jrange-*-jar-with-dependencies.jar \
+    connect -o stdout \
+    -m src/test/resources/I.merge.tsv \
+    src/test/resources/I.links.tsv
 ```
 
 ## COMPARISON
@@ -53,37 +58,37 @@ bash run.sh
 
 ```
 ==> jrange
-        4.51 real         5.68 user         0.78 sys
-2228719616  maximum resident set size
+        3.93 real         4.71 user         0.60 sys
+2227257344  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    546990  page reclaims
-         0  page faults
+    546375  page reclaims
+        33  page faults
          0  swaps
-         0  block input operations
+        43  block input operations
          4  block output operations
          0  messages sent
          0  messages received
-         3  signals received
-         7  voluntary context switches
-     15087  involuntary context switches
-==> merge_node.pl
-      246.99 real       717.22 user         4.90 sys
-  66809856  maximum resident set size
+         2  signals received
+       123  voluntary context switches
+      4787  involuntary context switches
+==> App::Rangeops
+      188.23 real       547.69 user         2.74 sys
+  73101312  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    148679  page reclaims
-        24  page faults
+    974396  page reclaims
+         0  page faults
          0  swaps
-        27  block input operations
-         4  block output operations
-       140  messages sent
-       130  messages received
+         0  block input operations
+         3  block output operations
+       804  messages sent
+       721  messages received
         20  signals received
-       327  voluntary context switches
-    799039  involuntary context switches
+      2566  voluntary context switches
+    213744  involuntary context switches
 ```
 
 * Ubuntu 14.04 E5-2690 v3 openJDK7

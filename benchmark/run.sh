@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cpanm --mirror-only --mirror https://stratopan.com/wangq/ega/master App::Rangeops
+
 COMMAND_TIME="command time -v"
 if [[ `uname` == 'Darwin' ]];
 then
@@ -14,9 +16,10 @@ ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     links.blast.tsv \
     > /dev/null
 
-echo "==> merge_node.pl"
-${COMMAND_TIME} perl ~/Scripts/egas/merge_node.pl \
-    -v -c 0.95 \
-    -f links.lastz.tsv \
-    -f links.blast.tsv \
+echo "==> App::Rangeops"
+${COMMAND_TIME} rangeops \
+    merge \
+    -o stdout -c 0.95 -p 8 \
+    links.lastz.tsv \
+    links.blast.tsv \
     > /dev/null
