@@ -10,8 +10,6 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.commons.Utils;
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.WeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
@@ -93,7 +91,7 @@ public class Connect {
         // edge weight represent strands:
         //      1 for  "+"
         //      -1 for "-"
-        WeightedGraph<String, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        SimpleWeightedGraph<String, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         // merged nodes
         Map<String, MergedNode> mergeOF = new HashMap<>();
@@ -128,7 +126,7 @@ public class Connect {
                     hitStrand = parts[2];
                 }
 
-                for (int i : new int[]{0, 1}) {
+                for ( int i : new int[]{0, 1} ) {
                     if ( mergeOF.containsKey(parts[i]) ) {
                         MergedNode mergedNode = mergeOF.get(parts[i]);
 
@@ -145,18 +143,23 @@ public class Connect {
                 }
 
                 // add vertexes
-                for (int i : new int[]{0, 1}) {
+                for ( int i : new int[]{0, 1} ) {
                     graph.addVertex(parts[i]);
                 }
 
                 // add edge and set weight
-                double weight = Objects.equals(hitStrand, "+") ? 1 : -1;
-                DefaultWeightedEdge edge = graph.addEdge(parts[0], parts[1]);
-                graph.setEdgeWeight(edge, weight);
+                if ( !graph.containsEdge(parts[0], parts[1]) ) {
+                    double weight = Objects.equals(hitStrand, "+") ? 1 : -1;
+                    DefaultWeightedEdge edge = graph.addEdge(parts[0], parts[1]);
+                    System.err.println(edge);
+                    graph.setEdgeWeight(edge, weight);
+                }
+
             }
         }
 
         // cc
+        System.err.println(graph);
 
         //----------------------------
         // Output
