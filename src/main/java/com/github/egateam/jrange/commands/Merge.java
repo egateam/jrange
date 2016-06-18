@@ -29,7 +29,7 @@ public class Merge {
     @Parameter(description = "<infiles>", required = true)
     private List<String> files;
 
-    @Parameter(names = {"--coverage", "-c"}, description = "When larger than this ratio, merge nodes.")
+    @Parameter(names = {"--coverage", "-c"}, description = "When larger than this ratio, merge ranges.")
     private double coverage = 0.9;
 
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
@@ -109,22 +109,22 @@ public class Merge {
 
             UndirectedGraph<String, DefaultEdge> graph = graphOfChr.get(chr);
 
-            List<String> nodes = new ArrayList<>(graph.vertexSet());
-            Collections.sort(nodes);
+            List<String> rangeList = new ArrayList<>(graph.vertexSet());
+            Collections.sort(rangeList);
 
-            for ( int i = 0; i < nodes.size(); i++ ) {
-                IntSpan intSpanI = objectOfRange.get(nodes.get(i)).getIntSpan();
+            for ( int i = 0; i < rangeList.size(); i++ ) {
+                IntSpan intSpanI = objectOfRange.get(rangeList.get(i)).getIntSpan();
                 if ( verbose ) {
                     System.err.println(
                         String.format(
-                            "    Node %d / %d\t%s",
-                            i, nodes.size(), nodes.get(i)
+                            "    Range %d / %d\t%s",
+                            i, rangeList.size(), rangeList.get(i)
                         )
                     );
                 }
 
-                for ( int j = i + 1; j < nodes.size(); j++ ) {
-                    IntSpan intSpanJ = objectOfRange.get(nodes.get(j)).getIntSpan();
+                for ( int j = i + 1; j < rangeList.size(); j++ ) {
+                    IntSpan intSpanJ = objectOfRange.get(rangeList.get(j)).getIntSpan();
 
                     IntSpan intersect = intSpanI.intersect(intSpanJ);
                     if ( !intersect.isEmpty() ) {
@@ -135,12 +135,12 @@ public class Merge {
                             if ( verbose ) {
                                 System.err.println(
                                     String.format(
-                                        "        Merge with Node %d / %d\t%s",
-                                        j, nodes.size(), nodes.get(j)
+                                        "        Merge with Range %d / %d\t%s",
+                                        j, rangeList.size(), rangeList.get(j)
                                     )
                                 );
                             }
-                            graph.addEdge(nodes.get(i), nodes.get(j));
+                            graph.addEdge(rangeList.get(i), rangeList.get(j));
                         }
                     }
                 }
@@ -161,14 +161,14 @@ public class Merge {
                     if ( verbose ) {
                         System.err.println(
                             String.format(
-                                "    Merge %s nodes", connectedSet.size()
+                                "    Merge %s ranges", connectedSet.size()
                             )
                         );
                     }
 
-                    // nodes in this connection
-                    List<String> nodes = new ArrayList<>(connectedSet);
-                    Collections.sort(nodes);
+                    // connected ranges
+                    List<String> rangeList = new ArrayList<>(connectedSet);
+                    Collections.sort(rangeList);
 
                     // collect info for merged range
                     IntSpan     intSpan = new IntSpan();
@@ -176,8 +176,8 @@ public class Merge {
                     String      strand;
                     boolean     change;
 
-                    for ( String node : nodes ) {
-                        ChrRange chrRange = objectOfRange.get(node);
+                    for ( String range : rangeList ) {
+                        ChrRange chrRange = objectOfRange.get(range);
 
                         intSpan.merge(chrRange.getIntSpan());
                         strands.add(chrRange.getStrand());
@@ -191,28 +191,28 @@ public class Merge {
                         change = true;
                     }
 
-                    ChrRange firstChrRange = objectOfRange.get(nodes.get(0));
-                    String mergedNode = String.format(
+                    ChrRange firstChrRange = objectOfRange.get(rangeList.get(0));
+                    String mergedRange = String.format(
                         "%s(%s):%s",
                         firstChrRange.getChr(), strand, intSpan.toString()
                     );
 
-                    for ( String node : nodes ) {
-                        if ( node.equals(mergedNode) ) {
+                    for ( String range : rangeList ) {
+                        if ( range.equals(mergedRange) ) {
                             continue;
                         }
 
-                        boolean nodeChange = false;
+                        boolean rangeChange = false;
                         if ( change ) {
-                            String nodeStrand = objectOfRange.get(node).getStrand();
-                            if ( !Objects.equals(nodeStrand, strand) ) {
-                                nodeChange = true;
+                            String rangeStrand = objectOfRange.get(range).getStrand();
+                            if ( !Objects.equals(rangeStrand, strand) ) {
+                                rangeChange = true;
                             }
                         }
 
                         String outString = String.format(
                             "%s\t%s\t%d",
-                            node, mergedNode, (nodeChange ? 1 : 0)
+                            range, mergedRange, (rangeChange ? 1 : 0)
                         );
                         if ( verbose ) {
                             System.err.println(outString);
