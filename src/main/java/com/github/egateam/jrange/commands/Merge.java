@@ -171,30 +171,18 @@ public class Merge {
                     Collections.sort(rangeList);
 
                     // collect info for merged range
-                    IntSpan     intSpan = new IntSpan();
-                    Set<String> strands = new TreeSet<>();
-                    String      strand;
-                    boolean     change;
+                    IntSpan intSpan = new IntSpan();
 
                     for ( String range : rangeList ) {
                         ChrRange chrRange = objectOfRange.get(range);
 
                         intSpan.merge(chrRange.getIntSpan());
-                        strands.add(chrRange.getStrand());
-                    }
-
-                    if ( strands.size() == 1 ) {
-                        strand = strands.iterator().next();
-                        change = false;
-                    } else {
-                        strand = "+";
-                        change = true;
                     }
 
                     ChrRange firstChrRange = objectOfRange.get(rangeList.get(0));
                     String mergedRange = String.format(
                         "%s(%s):%s",
-                        firstChrRange.getChr(), strand, intSpan.toString()
+                        firstChrRange.getChr(), "+", intSpan.toString()
                     );
 
                     for ( String range : rangeList ) {
@@ -202,18 +190,7 @@ public class Merge {
                             continue;
                         }
 
-                        boolean rangeChange = false;
-                        if ( change ) {
-                            String rangeStrand = objectOfRange.get(range).getStrand();
-                            if ( !Objects.equals(rangeStrand, strand) ) {
-                                rangeChange = true;
-                            }
-                        }
-
-                        String outString = String.format(
-                            "%s\t%s\t%d",
-                            range, mergedRange, (rangeChange ? 1 : 0)
-                        );
+                        String outString = String.format("%s\t%s", range, mergedRange);
                         if ( verbose ) {
                             System.err.println(outString);
                         }
