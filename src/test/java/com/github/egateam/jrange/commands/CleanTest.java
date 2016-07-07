@@ -31,7 +31,7 @@ public class CleanTest {
     }
 
     @Test
-    public void testCleanFailed() throws Exception {
+    public void testArgumentsFailed() throws Exception {
         String[] args = {"clean"};
         Cli.main(args);
 
@@ -39,15 +39,26 @@ public class CleanTest {
             "Except parameters");
     }
 
-//    @Test(description = "Test command with I.links.tsv")
-//    public void testExecute() throws Exception {
-//        String fileName1 = Utils.expendResource("I.links.tsv");
-//        String[] args = {"merge", fileName1, "--outfile", "stdout"};
-//        Cli.main(args);
-//
-//        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 6, "line count");
-//        Assert.assertTrue(this.stdoutContent.toString().contains("13327-17227"), "runlist exists");
-//    }
+    @Test(description = "Test command clean with II.sort.tsv")
+    public void testExecute() throws Exception {
+        String fileName1 = Utils.expendResource("II.sort.tsv");
+        String[] args = {"clean", fileName1, "--outfile", "stdout"};
+        Cli.main(args);
+
+        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 11, "line count");
+        Assert.assertTrue(this.stdoutContent.toString().contains("892-4684"), "runlist exists");
+    }
+
+    @Test(description = "Test command clean with II.sort.tsv and II.merge.tsv")
+    public void testExecuteMerge() throws Exception {
+        String fileName1 = Utils.expendResource("II.sort.tsv");
+        String fileName2 = Utils.expendResource("II.merge.tsv");
+        String[] args = {"clean", fileName1, "-r", fileName2, "--outfile", "stdout"};
+        Cli.main(args);
+
+        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 8, "line count");
+        Assert.assertFalse(this.stdoutContent.toString().contains("892-4684"), "runlist merged");
+    }
 
     @AfterMethod
     public void afterTest() {

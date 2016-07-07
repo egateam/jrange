@@ -65,6 +65,11 @@ cat src/test/resources/I.links.tsv \
 java -jar target/jrange-*-jar-with-dependencies.jar \
     clean -o stdout \
     src/test/resources/II.sort.tsv
+    
+java -jar target/jrange-*-jar-with-dependencies.jar \
+    clean -o stdout \
+    src/test/resources/II.sort.tsv \
+    -r src/test/resources/II.merge.tsv 
 
 # command connect not fully working
 java -jar target/jrange-*-jar-with-dependencies.jar \
