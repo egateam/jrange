@@ -30,7 +30,7 @@ public class Merge {
     private List<String> files;
 
     @Parameter(names = {"--coverage", "-c"}, description = "When larger than this ratio, merge ranges.")
-    private double coverage = 0.9;
+    private double coverage = 0.95;
 
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;

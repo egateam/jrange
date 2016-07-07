@@ -14,9 +14,23 @@ Usage: <main class> [options] [command] [command options]
        Print this help and quit
        Default: false
   Commands:
-    merge      Merge runlist yaml files
+    merge      Merge overlapped ranges via overlapping graph
       Usage: merge [options] <infiles>
         Options:
+          --coverage, -c
+             When larger than this ratio, merge ranges.
+             Default: 0.95
+          --outfile, -o
+             Output filename. [stdout] for screen.
+          --verbose, -v
+             Verbose mode.
+             Default: false
+
+    connect      Connect range links in paralog graph
+      Usage: connect [options] <infiles>
+        Options:
+          --merged, -m
+             Merged nodes file in .tsv format
           --outfile, -o
              Output filename. [stdout] for screen.
 
@@ -37,8 +51,18 @@ mvn clean verify
 
 java -jar target/jrange-*-jar-with-dependencies.jar \
     merge -o stdout \
-    src/test/resources/I.links.tsv
+    src/test/resources/II.links.tsv
 
+cat src/test/resources/I.links.tsv \
+    | java -jar target/jrange-*-jar-with-dependencies.jar \
+    merge -o stdout \
+    stdin
+
+java -jar target/jrange-*-jar-with-dependencies.jar \
+    clean -o stdout \
+    src/test/resources/II.sort.tsv
+
+# command connect not fully working
 java -jar target/jrange-*-jar-with-dependencies.jar \
     connect -o stdout \
     -m src/test/resources/I.merge.tsv \
