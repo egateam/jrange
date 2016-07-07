@@ -10,6 +10,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.commons.Utils;
+import com.github.egateam.jrange.util.StaticUtils;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
@@ -69,17 +70,6 @@ public class Connect {
         }
     }
 
-    private static String changeStrand(String strand) {
-        switch ( strand ) {
-            case "+":
-                return "-";
-            case "-":
-                return "+";
-            default:
-                return strand;
-        }
-    }
-
     public void execute() throws Exception {
         validateArgs();
 
@@ -132,7 +122,7 @@ public class Connect {
 
                         parts[i] = mergedNode.mergedNode;
                         if ( mergedNode.change ) {
-                            hitStrand = changeStrand(hitStrand);
+                            hitStrand = StaticUtils.changeStrand(hitStrand);
                         }
                     }
                 }
