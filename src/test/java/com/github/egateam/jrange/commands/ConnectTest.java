@@ -31,7 +31,7 @@ public class ConnectTest {
     }
 
     @Test
-    public void testMergeFailed() throws Exception {
+    public void testArgumentsFailed() throws Exception {
         String[] args = {"connect"};
         Cli.main(args);
 
@@ -39,15 +39,15 @@ public class ConnectTest {
             "Except parameters");
     }
 
-//    @Test(description = "Test command with I.links.tsv")
-//    public void testExecute() throws Exception {
-//        String fileName1 = Utils.expendResource("I.links.tsv");
-//        String[] args = {"merge", fileName1, "--outfile", "stdout"};
-//        Cli.main(args);
-//
+    @Test(description = "Test command with II.links.tsv")
+    public void testExecute() throws Exception {
+        String fileName1 = Utils.expendResource("II.links.tsv");
+        String[] args = {"connect", fileName1, "--outfile", "stdout"};
+        Cli.main(args);
+
 //        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 6, "line count");
 //        Assert.assertTrue(this.stdoutContent.toString().contains("13327-17227"), "runlist exists");
-//    }
+    }
 
     @AfterMethod
     public void afterTest() {
