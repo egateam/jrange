@@ -24,8 +24,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
-import com.github.egateam.jrange.commands.Connect;
-import com.github.egateam.jrange.commands.Merge;
+import com.github.egateam.jrange.commands.*;
 
 @SuppressWarnings("WeakerAccess")
 @Parameters
@@ -50,12 +49,10 @@ public class Cli {
     public void execute(String[] args) {
 
         JCommander jc = new JCommander(this);
+        jc.addCommand("sort", new Sort());
         jc.addCommand("merge", new Merge());
+        jc.addCommand("clean", new Clean());
         jc.addCommand("connect", new Connect());
-//        jc.addCommand("span", new Span());
-//        jc.addCommand("split", new Split());
-//        jc.addCommand("stat", new Stat());
-//        jc.addCommand("statop", new StatOp());
 
         String parsedCommand;
         try {
@@ -82,35 +79,19 @@ public class Cli {
         Object command = jc.getCommands().get(parsedCommand).getObjects().get(0);
 
         try {
-            if ( command instanceof Merge ) {
+            if ( command instanceof Sort ) {
+                Sort commandNew = (Sort) command;
+                commandNew.execute();
+            } else if ( command instanceof Merge ) {
                 Merge commandNew = (Merge) command;
+                commandNew.execute();
+            } else if ( command instanceof Clean ) {
+                Clean commandNew = (Clean) command;
                 commandNew.execute();
             } else if ( command instanceof Connect ) {
                 Connect commandNew = (Connect) command;
                 commandNew.execute();
             }
-//            } else if ( command instanceof Some ) {
-//                Some commandNew = (Some) command;
-//                commandNew.execute();
-//            } else if ( command instanceof Combine ) {
-//                Combine commandNew = (Combine) command;
-//                commandNew.execute();
-//            } else if ( command instanceof Stat ) {
-//                Stat commandNew = (Stat) command;
-//                commandNew.execute();
-//            } else if ( command instanceof StatOp ) {
-//                StatOp commandNew = (StatOp) command;
-//                commandNew.execute();
-//            } else if ( command instanceof Compare ) {
-//                Compare commandNew = (Compare) command;
-//                commandNew.execute();
-//            } else if ( command instanceof Span ) {
-//                Span commandNew = (Span) command;
-//                commandNew.execute();
-//            } else if ( command instanceof Cover ) {
-//                Cover commandNew = (Cover) command;
-//                commandNew.execute();
-//            }
         } catch ( Exception e ) {
             e.printStackTrace();
         }
