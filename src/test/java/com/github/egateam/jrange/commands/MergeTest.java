@@ -39,14 +39,14 @@ public class MergeTest {
             "Except parameters");
     }
 
-    @Test(description = "Test command with I.links.tsv")
+    @Test(description = "Test command with II.links.tsv")
     public void testExecute() throws Exception {
-        String fileName1 = Utils.expendResource("I.links.tsv");
+        String fileName1 = Utils.expendResource("II.links.tsv");
         String[] args = {"merge", fileName1, "--outfile", "stdout"};
         Cli.main(args);
 
         Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 6, "line count");
-        Assert.assertTrue(this.stdoutContent.toString().contains("13327-17227"), "runlist exists");
+        Assert.assertTrue(this.stdoutContent.toString().contains("892-4684"), "runlist exists");
     }
 
     @AfterMethod
