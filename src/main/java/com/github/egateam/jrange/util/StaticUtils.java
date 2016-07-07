@@ -1,7 +1,6 @@
 package com.github.egateam.jrange.util;
 
 import com.github.egateam.commons.ChrRange;
-import com.github.egateam.commons.Utils;
 
 import java.util.*;
 import java.util.stream.Collectors;
