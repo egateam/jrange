@@ -50,6 +50,10 @@ Oracle/Open JDK 1.7 or higher.
 mvn clean verify
 
 java -jar target/jrange-*-jar-with-dependencies.jar \
+    sort -o stdout \
+    src/test/resources/II.links.tsv
+
+java -jar target/jrange-*-jar-with-dependencies.jar \
     merge -o stdout \
     src/test/resources/II.links.tsv
 
