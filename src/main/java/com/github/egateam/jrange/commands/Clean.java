@@ -52,6 +52,12 @@ public class Clean {
             }
         }
 
+        if ( replaceFile != null ) {
+            if ( !new File(replaceFile).isFile() ) {
+                throw new IOException(String.format("The merged file [%s] doesn't exist.", replaceFile));
+            }
+        }
+
         if ( outfile == null ) {
             outfile = files.get(0) + ".clean.tsv";
         }
