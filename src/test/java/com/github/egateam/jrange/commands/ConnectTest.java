@@ -18,10 +18,10 @@ import java.io.PrintStream;
 
 public class ConnectTest {
     // Store the original standard out before changing it.
-    private final PrintStream originalStdout = System.out;
-    private final PrintStream originalStderr = System.err;
-    private ByteArrayOutputStream stdoutContent = new ByteArrayOutputStream();
-    private ByteArrayOutputStream stderrContent = new ByteArrayOutputStream();
+    private final PrintStream           originalStdout = System.out;
+    private final PrintStream           originalStderr = System.err;
+    private       ByteArrayOutputStream stdoutContent  = new ByteArrayOutputStream();
+    private       ByteArrayOutputStream stderrContent  = new ByteArrayOutputStream();
 
     @BeforeMethod
     public void beforeTest() {
@@ -39,14 +39,14 @@ public class ConnectTest {
             "Except parameters");
     }
 
-    @Test(description = "Test command with II.links.tsv")
+    @Test(description = "Test command with II.clean.tsv")
     public void testExecute() throws Exception {
-        String fileName1 = Utils.expendResource("II.links.tsv");
-        String[] args = {"connect", fileName1, "--outfile", "stdout"};
+        String   fileName1 = Utils.expendResource("II.clean.tsv");
+        String[] args      = {"connect", fileName1, "--outfile", "stdout"};
         Cli.main(args);
 
 //        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 6, "line count");
-//        Assert.assertTrue(this.stdoutContent.toString().contains("13327-17227"), "runlist exists");
+        Assert.assertTrue(this.stdoutContent.toString().contains("1-2018"), "runlist exists");
     }
 
     @AfterMethod

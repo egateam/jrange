@@ -74,8 +74,7 @@ java -jar target/jrange-*-jar-with-dependencies.jar \
 # command connect not fully working
 java -jar target/jrange-*-jar-with-dependencies.jar \
     connect -o stdout \
-    -m src/test/resources/I.merge.tsv \
-    src/test/resources/I.links.tsv
+    src/test/resources/II.clean.tsv
 ```
 
 ## COMPARISON

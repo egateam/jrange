@@ -29,9 +29,6 @@ public class Connect {
     @Parameter(description = "<infiles>", required = true)
     private List<String> files;
 
-    @Parameter(names = {"--merged", "-m"}, description = "Merged nodes file in .tsv format")
-    private String merged;
-
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
@@ -49,24 +46,8 @@ public class Connect {
             }
         }
 
-        if ( merged != null ) {
-            if ( !new File(merged).isFile() ) {
-                throw new IOException(String.format("The merged file [%s] doesn't exist.", merged));
-            }
-        }
-
         if ( outfile == null ) {
             outfile = files.get(0) + ".replace.txt";
-        }
-    }
-
-    private static class MergedNode {
-        final String  mergedNode;
-        final boolean change;
-
-        MergedNode(String mergedNode, boolean change) {
-            this.mergedNode = mergedNode;
-            this.change = change;
         }
     }
 
@@ -83,22 +64,6 @@ public class Connect {
         //      -1 for "-"
         SimpleWeightedGraph<String, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
-        // merged nodes
-        Map<String, MergedNode> mergeOF = new HashMap<>();
-        if ( merged != null ) {
-            List<String> lines = Utils.readLines(merged);
-            for ( String line : lines ) {
-                String parts[] = line.split("\\t");
-                if ( parts.length != 3 ) {
-                    continue;
-                }
-
-                boolean    change = Objects.equals(parts[2], "1");
-                MergedNode merge  = new MergedNode(parts[1], change);
-                mergeOF.put(parts[0], merge);
-            }
-        }
-
         for ( String inFile : files ) {
             List<String> lines = Utils.readLines(inFile);
 
@@ -114,17 +79,6 @@ public class Connect {
                     hitStrand = "+";
                 } else {
                     hitStrand = parts[2];
-                }
-
-                for ( int i : new int[]{0, 1} ) {
-                    if ( mergeOF.containsKey(parts[i]) ) {
-                        MergedNode mergedNode = mergeOF.get(parts[i]);
-
-                        parts[i] = mergedNode.mergedNode;
-                        if ( mergedNode.change ) {
-                            hitStrand = StaticUtils.changeStrand(hitStrand);
-                        }
-                    }
                 }
 
                 // skip self links
@@ -149,7 +103,7 @@ public class Connect {
         }
 
         // cc
-        System.err.println(graph);
+        System.out.println(graph);
 
         //----------------------------
         // Output
