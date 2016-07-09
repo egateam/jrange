@@ -14,7 +14,8 @@ ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     -o stdout -c 0.95 \
     links.lastz.tsv \
     links.blast.tsv \
-    > /dev/null
+    | sort \
+    > jmerge.tsv.tmp
 
 echo "==> App::Rangeops merge lastz blast"
 ${COMMAND_TIME} rangeops \
@@ -22,18 +23,19 @@ ${COMMAND_TIME} rangeops \
     -o stdout -c 0.95 -p 8 \
     links.lastz.tsv \
     links.blast.tsv \
-    > /dev/null
+    | sort \
+    > pmerge.tsv.tmp
 
 echo "==> jrange clean sort.clean"
 ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     clean \
     -o stdout \
     sort.clean.tsv \
-    > /dev/null
+    > jclean.tsv.tmp
 
 echo "==> App::Rangeops clean sort.clean"
 ${COMMAND_TIME} rangeops \
     clean \
     -o stdout \
     sort.clean.tsv \
-    > /dev/null
+    > pclean.tsv.tmp
