@@ -39,7 +39,7 @@ public class CleanTest {
             "Except parameters");
     }
 
-    @Test(description = "Test command clean with II.sort.tsv")
+    @Test
     public void testExecute() throws Exception {
         String fileName1 = Utils.expendResource("II.sort.tsv");
         String[] args = {"clean", fileName1, "--outfile", "stdout"};
@@ -49,7 +49,17 @@ public class CleanTest {
         Assert.assertTrue(this.stdoutContent.toString().contains("892-4684"), "runlist exists");
     }
 
-    @Test(description = "Test command clean with II.sort.tsv and II.merge.tsv")
+    @Test
+    public void testExecuteBundle() throws Exception {
+        String fileName1 = Utils.expendResource("II.sort.tsv");
+        String[] args = {"clean", fileName1, "--bundle", "500", "--outfile", "stdout"};
+        Cli.main(args);
+
+        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 10, "line count");
+        Assert.assertFalse(this.stdoutContent.toString().contains("892-4684"), "runlist bundled");
+    }
+
+    @Test
     public void testExecuteMerge() throws Exception {
         String fileName1 = Utils.expendResource("II.sort.tsv");
         String fileName2 = Utils.expendResource("II.merge.tsv");

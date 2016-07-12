@@ -39,3 +39,19 @@ ${COMMAND_TIME} rangeops \
     -o stdout \
     sort.clean.tsv \
     > pclean.tsv.tmp
+
+echo "==> jrange clean bundle sort.clean"
+${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
+    clean \
+    -o stdout \
+    --bundle 500 \
+    sort.clean.tsv \
+    > jbundle.tsv.tmp
+
+echo "==> App::Rangeops clean bundle sort.clean"
+${COMMAND_TIME} rangeops \
+    clean \
+    -o stdout \
+    --bundle 500 \
+    sort.clean.tsv \
+    > pbundle.tsv.tmp

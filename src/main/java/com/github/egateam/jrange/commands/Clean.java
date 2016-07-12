@@ -13,6 +13,10 @@ import com.github.egateam.IntSpan;
 import com.github.egateam.commons.ChrRange;
 import com.github.egateam.commons.Utils;
 import com.github.egateam.jrange.util.StaticUtils;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +35,9 @@ public class Clean {
 
     @Parameter(names = {"--replace", "-r"}, description = "Two-column tsv file, normally produced by command merge.")
     private String replaceFile;
+
+    @Parameter(names = {"--bundle", "-b"}, description = "Bundle overlapped links. This value is the overlapping size. Suggested value is [500].")
+    private int bundle = 0;
 
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
@@ -221,6 +228,121 @@ public class Clean {
             flagNest = toRemove.size() > 0;
         }
         lines = StaticUtils.sortLinks(lines);
+
+        //----------------------------
+        // Bundle links
+        //----------------------------
+        if ( bundle != 0 ) {
+            if ( verbose ) {
+                System.err.println("==> Bundle overlapped links");
+            }
+
+            List<String> chrStrandPairs = lines.stream()
+                .map((key) -> {
+                    String parts[] = key.split("\\t");
+                    return String.join(":",
+                        objectOfRange.get(parts[0]).getChr(),
+                        objectOfRange.get(parts[0]).getStrand(),
+                        objectOfRange.get(parts[1]).getChr(),
+                        objectOfRange.get(parts[1]).getStrand()
+                    );
+                })
+                .collect(Collectors.toList());
+
+            UndirectedGraph<String, DefaultEdge> graph =
+                new SimpleGraph<>(DefaultEdge.class);
+
+            for ( int i = 0; i < lines.size(); i++ ) {
+                String curPair = chrStrandPairs.get(i);
+                List<Integer> restIdx = IntStream.range(i + 1, chrStrandPairs.size())
+                    .filter((key) -> Objects.equals(chrStrandPairs.get(key), curPair))
+                    .boxed()
+                    .collect(Collectors.toList());
+
+                for ( int j : restIdx ) {
+                    String lineI    = lines.get(i);
+                    String partsI[] = lineI.split("\\t");
+
+                    String lineJ    = lines.get(j);
+                    String partsJ[] = lineJ.split("\\t");
+
+                    if ( !graph.containsVertex(lineI) ) {
+                        graph.addVertex(lineI);
+                    }
+                    if ( !graph.containsVertex(lineJ) ) {
+                        graph.addVertex(lineJ);
+                    }
+
+                    IntSpan intSpan0I = objectOfRange.get(partsI[0]).getIntSpan();
+                    IntSpan intSpan1I = objectOfRange.get(partsI[1]).getIntSpan();
+
+                    IntSpan intSpan0J = objectOfRange.get(partsJ[0]).getIntSpan();
+                    IntSpan intSpan1J = objectOfRange.get(partsJ[1]).getIntSpan();
+
+                    if ( intSpan0I.intersect(intSpan0J).size() >= bundle ) {
+                        if ( intSpan1I.intersect(intSpan1J).size() >= bundle ) {
+                            graph.addEdge(lineI, lineJ);
+                        }
+                    }
+                }
+            }
+
+            // bundle connected lines
+            ConnectivityInspector cci           = new ConnectivityInspector(graph);
+            List<Set<String>>     connectedList = cci.connectedSets();
+
+            for ( Set<String> connected : connectedList ) {
+                if ( verbose ) {
+                    System.err.println(
+                        String.format(
+                            "    Merge %s lines", connected.size()
+                        )
+                    );
+                }
+
+                // connected lines
+                List<String> lineList = new ArrayList<>(connected);
+                Collections.sort(lineList);
+
+                List<String> mergedRanges = new ArrayList<>();
+                for ( int i : new int[]{0, 1} ) {
+                    String  chr    = "";
+                    String  strand = "";
+                    IntSpan merged = new IntSpan();
+
+                    for ( String line : lineList ) {
+                        lines = lines.stream()
+                            .filter((key) -> !Objects.equals(key, line))
+                            .collect(Collectors.toList());
+
+                        String parts[] = line.split("\\t");
+                        chr = objectOfRange.get(parts[i]).getChr();
+                        strand = objectOfRange.get(parts[i]).getStrand();
+                        merged.merge(objectOfRange.get(parts[i]).getIntSpan());
+                    }
+
+                    ChrRange chrRange = new ChrRange("DUMMY");
+                    chrRange.setChr(chr);
+                    chrRange.setStrand(strand);
+                    chrRange.setStart(merged.min());
+                    chrRange.setEnd(merged.max());
+                    mergedRanges.add(chrRange.toString());
+                }
+
+                String newLine = String.join("\t", mergedRanges);
+                lines.add(newLine);
+
+                if ( verbose ) {
+                    System.err.println(
+                        String.format(
+                            "        Merge %s lines", newLine
+                        )
+                    );
+                }
+            }
+
+            lines = StaticUtils.sortLinks(lines);
+        }
 
         //----------------------------
         // Links of nearly identical ranges escaped from merging
