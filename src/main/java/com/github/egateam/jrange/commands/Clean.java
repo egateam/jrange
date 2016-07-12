@@ -330,6 +330,7 @@ public class Clean {
                 }
 
                 String newLine = String.join("\t", mergedRanges);
+                StaticUtils.buildChrRange(newLine, objectOfRange);
                 lines.add(newLine);
 
                 if ( verbose ) {
