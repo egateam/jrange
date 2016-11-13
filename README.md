@@ -1,5 +1,6 @@
-[![Travis](https://img.shields.io/travis/wang-q/jrange.svg)](https://travis-ci.org/wang-q/jrange)
-[![Codecov branch](https://img.shields.io/codecov/c/github/wang-q/jrange/master.svg)](https://codecov.io/github/wang-q/jrange?branch=master)
+[![Travis](https://img.shields.io/travis/egateam/jrange.svg)](https://travis-ci.org/egateam/jrange)
+[![Codecov branch](https://img.shields.io/codecov/c/github/egateam/jrange/master.svg)](https://codecov.io/github/egateam/jrange?branch=master)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.egateam/jrange.svg)](http://search.maven.org/#search|ga|1|g%3A%22com.github.egateam%22%20AND%20a%3A%22jrange%22)
 
 # NAME
 
