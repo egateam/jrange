@@ -9,7 +9,7 @@
 编译
 
 		brew install wang-q/tap/jrange
-利用homebrew下载安装jrange
+利用`homebrew`下载安装jrange
 		
 		sudo cpanm App::Rangeops
 利用`cpanm`下载安装App::Rangeops
