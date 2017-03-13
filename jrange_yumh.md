@@ -10,8 +10,9 @@
 
 		brew install wang-q/tap/jrange
 利用homebrew下载安装jrange
+		
 		sudo cpanm App::Rangeops
-利用cpanm下载安装App::Rangeops
+利用`cpanm`下载安装App::Rangeops
 
 ## Example
 例子
@@ -515,7 +516,7 @@ XIV(-):7479-9033	II(+):810776-812328	+
 XVI(+):700594-701971	II(+):477671-479048	+
 ```
 
-经过sort后可以得到：
+经过`jrange sort t/II.links.tsv -o stdout`后可以得到：
 
 ```bash
 II(+):1-2018	XII(+):204-2215	+
@@ -541,7 +542,7 @@ II(+):810776-812328	XIV(-):7479-9033	+
 
 a. 在 http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.egateam%22%20AND%20a%3A%22jrange%22 下载 jrange-0.0.3-jar-with-dependencies.jar，目录放在~/benchmark/target中
 
-b. 使用cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)命令安装模块
+b. 使用`cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)`命令安装模块
 
 * Command
 ```bash
