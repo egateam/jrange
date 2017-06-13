@@ -2,13 +2,25 @@
 [![Codecov branch](https://img.shields.io/codecov/c/github/egateam/jrange/master.svg)](https://codecov.io/github/egateam/jrange?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.egateam/jrange.svg)](http://search.maven.org/#search|ga|1|g%3A%22com.github.egateam%22%20AND%20a%3A%22jrange%22)
 
+[TOC levels=1-3]: # " "
+- [NAME](#name)
+- [SYNOPSIS](#synopsis)
+- [DESCRIPTION](#description)
+- [REQUIREMENTS](#requirements)
+- [EXAMPLES](#examples)
+- [COMPARISON](#comparison)
+    - [BENCHMARK](#benchmark)
+- [AUTHOR](#author)
+- [COPYRIGHT AND LICENSE](#copyright-and-license)
+
+
 # NAME
 
 `jrange` operates ranges and links of ranges on chromosomes.
 
-## SYNOPSIS
+# SYNOPSIS
 
-```
+```text
 Usage: <main class> [options] [command] [command options]
   Options:
     --help, -h
@@ -37,15 +49,15 @@ Usage: <main class> [options] [command] [command options]
 
 ```
 
-## DESCRIPTION
+# DESCRIPTION
 
 This Java package is ported from some Perl scripts in `egas`.
 
-## REQUIREMENTS
+# REQUIREMENTS
 
 Oracle/Open JDK 1.7 or higher.
 
-## EXAMPLES
+# EXAMPLES
 
 ```bash
 mvn clean verify
@@ -83,9 +95,9 @@ java -jar target/jrange-*-jar-with-dependencies.jar \
     src/test/resources/II.clean.tsv
 ```
 
-## COMPARISON
+# COMPARISON
 
-### BENCHMARK
+## BENCHMARK
 
 ```bash
 cd benchmark
@@ -193,11 +205,11 @@ bash run.sh
      10483  involuntary context switches
 ```
 
-## AUTHOR
+# AUTHOR
 
 Qiang Wang &lt;wang-q@outlook.com&gt;
 
-## COPYRIGHT AND LICENSE
+# COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2016 by Qiang Wang.
 
