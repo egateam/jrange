@@ -100,8 +100,7 @@ java -jar target/jrange-*-jar-with-dependencies.jar \
 ## BENCHMARK
 
 ```bash
-cd benchmark
-bash run.sh
+bash benchmark/run.sh
 ```
 
 * OSX 10.11 i7-6700k oracleJDK8
