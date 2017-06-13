@@ -103,7 +103,7 @@ jrange sort src/test/resources/II.links.tsv -o stdout
 jrange merge src/test/resources/II.links.tsv -o stdout
 
 cat src/test/resources/I.links.tsv \
-    | jrange merge stdin -o stdout \
+    | jrange merge stdin -o stdout
 
 jrange clean src/test/resources/II.sort.tsv -o stdout
 
