@@ -7,6 +7,7 @@
 - [SYNOPSIS](#synopsis)
 - [DESCRIPTION](#description)
 - [REQUIREMENTS](#requirements)
+- [INSTALLATION](#installation)
 - [EXAMPLES](#examples)
 - [COMPARISON](#comparison)
     - [BENCHMARK](#benchmark)
@@ -21,12 +22,19 @@
 # SYNOPSIS
 
 ```text
+$ jrange --help
 Usage: <main class> [options] [command] [command options]
   Options:
     --help, -h
        Print this help and quit
        Default: false
   Commands:
+    sort      Replace ranges within links, incorporate hit strands and remove nested links
+      Usage: sort [options] <infiles>
+        Options:
+          --outfile, -o
+             Output filename. [stdout] for screen.
+
     merge      Merge overlapped ranges via overlapping graph
       Usage: merge [options] <infiles>
         Options:
@@ -39,11 +47,24 @@ Usage: <main class> [options] [command] [command options]
              Verbose mode.
              Default: false
 
+    clean      Replace ranges within links, incorporate hit strands and remove nested links
+      Usage: clean [options] <infiles>
+        Options:
+          --bundle, -b
+             Bundle overlapped links. This value is the overlapping size.
+             Suggested value is [500].
+             Default: 0
+          --outfile, -o
+             Output filename. [stdout] for screen.
+          --replace, -r
+             Two-column tsv file, normally produced by command merge.
+          --verbose, -v
+             Verbose mode.
+             Default: false
+
     connect      Connect range links in paralog graph
       Usage: connect [options] <infiles>
         Options:
-          --merged, -m
-             Merged nodes file in .tsv format
           --outfile, -o
              Output filename. [stdout] for screen.
 
@@ -51,48 +72,48 @@ Usage: <main class> [options] [command] [command options]
 
 # DESCRIPTION
 
-This Java package is ported from some Perl scripts in `egas`.
+This Java package is ported from the Perl package `App::Rangeops`.
 
 # REQUIREMENTS
 
 Oracle/Open JDK 1.7 or higher.
 
+# INSTALLATION
+
+* By Homebrew (Linuxbrew)
+
+    ```bash
+    brew install wang-q/tap/jrange
+    ```
+
+* By maven
+
+    ```bash
+    git clone https://github.com/egateam/jrange
+    cd jrange
+    
+    mvn clean verify
+    ```
+
 # EXAMPLES
 
 ```bash
-mvn clean verify
+jrange sort src/test/resources/II.links.tsv -o stdout
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    sort -o stdout \
-    src/test/resources/II.links.tsv
-
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    merge -o stdout \
-    src/test/resources/II.links.tsv
+jrange merge src/test/resources/II.links.tsv -o stdout
 
 cat src/test/resources/I.links.tsv \
-    | java -jar target/jrange-*-jar-with-dependencies.jar \
-    merge -o stdout \
-    stdin
+    | jrange merge stdin -o stdout \
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    clean -o stdout \
-    src/test/resources/II.sort.tsv
+jrange clean src/test/resources/II.sort.tsv -o stdout
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    clean -o stdout \
-    --bundle 500 \
-    src/test/resources/II.sort.tsv
+jrange clean src/test/resources/II.sort.tsv --bundle 500 -o stdout 
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    clean -o stdout \
-    -r src/test/resources/II.merge.tsv \
-    src/test/resources/II.sort.tsv
+jrange clean src/test/resources/II.sort.tsv -r src/test/resources/II.merge.tsv -o stdout
 
 # command connect not fully working
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    connect -o stdout \
-    src/test/resources/II.clean.tsv
+jrange connect src/test/resources/II.clean.tsv -o stdout
+
 ```
 
 # COMPARISON
