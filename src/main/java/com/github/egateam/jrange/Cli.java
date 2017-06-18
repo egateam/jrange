@@ -53,6 +53,7 @@ public class Cli {
         jc.addCommand("merge", new Merge());
         jc.addCommand("clean", new Clean());
         jc.addCommand("connect", new Connect());
+        jc.addCommand("covered", new Covered());
 
         String parsedCommand;
         try {
@@ -90,6 +91,9 @@ public class Cli {
                 commandNew.execute();
             } else if ( command instanceof Connect ) {
                 Connect commandNew = (Connect) command;
+                commandNew.execute();
+            } else if ( command instanceof Covered ) {
+                Covered commandNew = (Covered) command;
                 commandNew.execute();
             }
         } catch ( Exception e ) {
