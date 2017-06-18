@@ -111,9 +111,9 @@ jrange clean src/test/resources/II.sort.tsv --bundle 500 -o stdout
 
 jrange clean src/test/resources/II.sort.tsv -r src/test/resources/II.merge.tsv -o stdout
 
-# command connect not fully working
-jrange connect src/test/resources/II.clean.tsv -o stdout
-
+# (Unfinished)
+#jrange connect src/test/resources/II.clean.tsv -o stdout
+#jarnge reduce
 ```
 
 # COMPARISON

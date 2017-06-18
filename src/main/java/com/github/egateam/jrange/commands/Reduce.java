@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings({"CanBeFinal"})
-@Parameters(commandDescription = "Transitively reduce a directed graph")
+@Parameters(commandDescription = "(Unfinished) Transitively reduce a directed graph")
 public class Reduce {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")

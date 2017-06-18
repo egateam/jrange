@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @SuppressWarnings({"CanBeFinal"})
-@Parameters(commandDescription = "Connect range links in paralog graph")
+@Parameters(commandDescription = "(Unfinished) Connect range links in paralog graph")
 public class Connect {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
