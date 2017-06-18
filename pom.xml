@@ -95,7 +95,7 @@
         <dependency>
             <groupId>com.github.egateam</groupId>
             <artifactId>commons</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.7</version>
         </dependency>
 
     </dependencies>
