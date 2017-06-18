@@ -1,5 +1,6 @@
 package com.github.egateam.jrange.util;
 
+import com.github.egateam.IntSpan;
 import com.github.egateam.commons.ChrRange;
 
 import java.util.*;
@@ -28,6 +29,43 @@ public class StaticUtils {
                 return "+";
             default:
                 return strand;
+        }
+    }
+
+    public static int[] begEnd(int beg, int end) {
+        if ( beg > end ) {
+            int temp = beg;
+            beg = end;
+            end = temp;
+        }
+
+        if ( beg == 0 ) {
+            beg = 1;
+        }
+
+        return new int[]{beg, end};
+    }
+
+    public static void bumpCoverage(Map<Integer, IntSpan> tier_of, int beg, int end) {
+        int[]   begEnd     = StaticUtils.begEnd(beg, end);
+        IntSpan intSpanNew = new IntSpan(begEnd[0], begEnd[1]);
+
+        int max_tier = Collections.max(tier_of.keySet());
+        if ( tier_of.get(-1).superset(intSpanNew)
+            && tier_of.get(-1).equals(tier_of.get(max_tier)) ) {
+            return;
+        }
+
+        for ( int i = 1; i <= max_tier; i++ ) {
+            IntSpan intSpanI = tier_of.get(i).intersect(intSpanNew);
+            tier_of.get(i).add(intSpanNew);
+
+            int j = i + 1;
+            if ( j > max_tier ) {
+                break;
+            }
+
+            intSpanNew = intSpanI.copy();
         }
     }
 
