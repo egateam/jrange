@@ -175,6 +175,7 @@ public class Covered {
 
             if ( wantBaseCov ) {
                 Map<Integer, IntSpan> tier_of = covered.get(key);
+                StaticUtils.uniqCoverage(tier_of);
 
                 Map<Integer, Integer> basecov_of = new HashMap<>();
                 int                   max_tier   = Collections.max(tier_of.keySet());
@@ -194,6 +195,7 @@ public class Covered {
                 }
             } else if ( wantMeanCov ) {
                 Map<Integer, IntSpan> tier_of = covered.get(key);
+                StaticUtils.uniqCoverage(tier_of);
 
                 int max_tier = Collections.max(tier_of.keySet());
                 int totalLen = tier_of.get(-1).size();
