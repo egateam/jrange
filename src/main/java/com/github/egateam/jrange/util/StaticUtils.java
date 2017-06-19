@@ -73,6 +73,19 @@ public class StaticUtils {
         }
     }
 
+    /**
+     * @param tier_of tiers of covered regions
+     */
+    public static void uniqCoverage(Map<Integer, IntSpan> tier_of) {
+        int max_tier = Collections.max(tier_of.keySet());
+
+        for ( int i = 1; i < max_tier; i++ ) {
+            IntSpan intSpanCur = tier_of.get(i);
+            IntSpan intSpanNext = tier_of.get(i + 1);
+            intSpanCur.subtract(intSpanNext);
+        }
+    }
+
     public static List<String> sortLinks(List<String> lines) {
 
         Map<String, ChrRange> objectOfRange = new HashMap<>();
