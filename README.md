@@ -98,6 +98,9 @@ Oracle/Open JDK 1.7 or higher.
 # EXAMPLES
 
 ```bash
+# mvn clean verify
+# java -jar target/jrange-*-jar-with-dependencies.jar sort src/test/resources/II.links.tsv -o stdout
+
 jrange sort src/test/resources/II.links.tsv -o stdout
 
 jrange merge src/test/resources/II.links.tsv -o stdout
@@ -110,6 +113,12 @@ jrange clean src/test/resources/II.sort.tsv -o stdout
 jrange clean src/test/resources/II.sort.tsv --bundle 500 -o stdout 
 
 jrange clean src/test/resources/II.sort.tsv -r src/test/resources/II.merge.tsv -o stdout
+
+java -jar target/jrange-*-jar-with-dependencies.jar \
+    covered src/test/resources/1_4.pac.paf.ovlp.tsv -o stdout
+
+java -jar target/jrange-*-jar-with-dependencies.jar \
+    covered src/test/resources/11_2.long.paf --paf -o stdout
 
 # (Unfinished)
 #jrange connect src/test/resources/II.clean.tsv -o stdout
