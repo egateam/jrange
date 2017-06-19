@@ -38,6 +38,9 @@ public class Covered {
     @Parameter(names = {"--paf"}, description = "input format as PAF")
     private boolean isPaf = false;
 
+    @Parameter(names = {"--longest"}, description = "only keep the longest span")
+    private boolean wantLongest = false;
+
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
@@ -78,10 +81,9 @@ public class Covered {
             for ( String line : lines ) {
                 Ovlp ovlp = new Ovlp();
 
-                if (isPaf) {
+                if ( isPaf ) {
                     ovlp.parsePafLine(line);
-                }
-                else {
+                } else {
                     ovlp.parseOvlpLine(line);
                 }
 
@@ -148,7 +150,34 @@ public class Covered {
         List<String> keys = new ArrayList<>(covered.keySet());
         Collections.sort(keys);
         for ( String key : keys ) {
-            String line = String.format("%s:%s", key, covered.get(key).get(coverage));
+            IntSpan intSpan = covered.get(key).get(coverage);
+
+            String line;
+            if ( !wantLongest ) {
+                line = String.format("%s:%s", key, intSpan);
+            } else if ( intSpan.spanSize() <= 1 ) { // empty or one span
+                line = String.format("%s:%s", key, intSpan);
+            } else { // get the longest span
+                int[] ranges = intSpan.ranges().toArray();
+
+                List<Integer> spanSizes = new ArrayList<>();
+                for ( int i = 0; i < intSpan.spanSize(); i++ ) {
+                    int spanSize = ranges[i * 2 + 1] - ranges[i * 2] + 1;
+                    spanSizes.add(spanSize);
+                }
+
+                int maxIndex = 0;
+                for ( int i = 0; i < intSpan.spanSize(); i++ ) {
+                    int spanSize = spanSizes.get(i);
+                    if ( (spanSize > spanSizes.get(maxIndex)) ) {
+                        maxIndex = i;
+                    }
+                }
+
+                IntSpan longest = new IntSpan(ranges[maxIndex * 2], ranges[maxIndex * 2 + 1]);
+                line = String.format("%s:%s", key, longest);
+            }
+
             lines.add(line);
         }
 
