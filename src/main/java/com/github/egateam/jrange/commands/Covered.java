@@ -35,6 +35,9 @@ public class Covered {
     @Parameter(names = {"--idt", "-i"}, description = "minimal length of overlaps")
     private double minOvlpIdt = 0;
 
+    @Parameter(names = {"--paf"}, description = "input format as PAF")
+    private boolean isPaf = false;
+
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
@@ -73,7 +76,14 @@ public class Covered {
             List<String> lines = Utils.readLines(inFile);
 
             for ( String line : lines ) {
-                Ovlp ovlp = new Ovlp(line);
+                Ovlp ovlp = new Ovlp();
+
+                if (isPaf) {
+                    ovlp.parsePafLine(line);
+                }
+                else {
+                    ovlp.parseOvlpLine(line);
+                }
 
                 String fId = ovlp.getfId();
                 String gId = ovlp.getgId();
