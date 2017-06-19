@@ -44,6 +44,9 @@ public class Covered {
     @Parameter(names = {"--basecov"}, description = "coverage per base location")
     private boolean wantBaseCov = false;
 
+    @Parameter(names = {"--meancov"}, description = "mean coverage per base location")
+    private boolean wantMeanCov = false;
+
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
@@ -62,10 +65,12 @@ public class Covered {
         }
 
         if ( outfile == null ) {
-            if ( !wantBaseCov ) {
-                outfile = files.get(0) + ".pos.txt";
-            } else {
+            if ( wantBaseCov ) {
                 outfile = files.get(0) + ".basecov.txt";
+            } else if ( wantMeanCov ) {
+                outfile = files.get(0) + ".meancov.txt";
+            } else {
+                outfile = files.get(0) + ".pos.txt";
             }
         }
     }
@@ -168,7 +173,40 @@ public class Covered {
         for ( String key
             : keys ) {
 
-            if ( !wantBaseCov ) {
+            if ( wantBaseCov ) {
+                Map<Integer, IntSpan> tier_of = covered.get(key);
+
+                Map<Integer, Integer> basecov_of = new HashMap<>();
+                int                   max_tier   = Collections.max(tier_of.keySet());
+                for ( int tier = 0; tier <= max_tier; tier++ ) {
+                    for ( int pos : tier_of.get(tier).elements() ) {
+                        basecov_of.put(pos, tier);
+                    }
+                }
+
+                List<Integer> sortedKeys = new ArrayList<>(basecov_of.keySet());
+                Collections.sort(sortedKeys);
+
+                for ( int pos :
+                    sortedKeys ) {
+                    String line = String.format("%s\t%d\t%d", key, pos - 1, basecov_of.get(pos));
+                    lines.add(line);
+                }
+            } else if ( wantMeanCov ) {
+                Map<Integer, IntSpan> tier_of = covered.get(key);
+
+                int max_tier = Collections.max(tier_of.keySet());
+                int totalLen = tier_of.get(-1).size();
+                int sum      = 0;
+                for ( int tier = 0; tier <= max_tier; tier++ ) {
+                    sum += tier * tier_of.get(tier).size();
+                }
+
+                double meanCov = (double) sum / (double) totalLen;
+
+                String line = String.format("%s\t%d\t%.1f", key, totalLen, meanCov);
+                lines.add(line);
+            } else {
                 String line;
 
                 IntSpan intSpan = covered.get(key).get(coverage);
@@ -198,25 +236,6 @@ public class Covered {
                 }
 
                 lines.add(line);
-            } else {
-                Map<Integer, IntSpan> tier_of = covered.get(key);
-
-                Map<Integer, Integer> basecov_of = new HashMap<>();
-                int max_tier = Collections.max(tier_of.keySet());
-                for ( int tier = 0; tier <= max_tier; tier++ ) {
-                    for ( int pos : tier_of.get(tier).elements() ) {
-                        basecov_of.put(pos, tier);
-                    }
-                }
-
-                List<Integer> sortedKeys = new ArrayList<>(basecov_of.keySet());
-                Collections.sort(sortedKeys);
-
-                for ( int pos :
-                    sortedKeys ) {
-                    String line = String.format("%s\t%d\t%d", key, pos - 1, basecov_of.get(pos));
-                    lines.add(line);
-                }
             }
         }
 
