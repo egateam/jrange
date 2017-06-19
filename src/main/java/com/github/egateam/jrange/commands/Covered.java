@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.*;
 
 @SuppressWarnings({"CanBeFinal"})
-@Parameters(commandDescription = "(Unfinished) Covered regions from .ovlp.tsv files")
+@Parameters(commandDescription = "Covered regions from .ovlp.tsv files")
 public class Covered {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
@@ -41,6 +41,9 @@ public class Covered {
     @Parameter(names = {"--longest"}, description = "only keep the longest span")
     private boolean wantLongest = false;
 
+    @Parameter(names = {"--basecov"}, description = "coverage per base location")
+    private boolean wantBaseCov = false;
+
     @Parameter(names = {"--outfile", "-o"}, description = "Output filename. [stdout] for screen.")
     private String outfile;
 
@@ -59,7 +62,11 @@ public class Covered {
         }
 
         if ( outfile == null ) {
-            outfile = files.get(0) + ".pos.txt";
+            if ( !wantBaseCov ) {
+                outfile = files.get(0) + ".pos.txt";
+            } else {
+                outfile = files.get(0) + ".basecov.txt";
+            }
         }
     }
 
@@ -75,10 +82,12 @@ public class Covered {
 
         // load overlaps and build coverages
         Set<String> seen = new HashSet<>();
-        for ( String inFile : files ) {
+        for ( String inFile
+            : files ) {
             List<String> lines = Utils.readLines(inFile);
 
-            for ( String line : lines ) {
+            for ( String line
+                : lines ) {
                 Ovlp ovlp = new Ovlp();
 
                 if ( isPaf ) {
@@ -104,7 +113,12 @@ public class Covered {
                 }
 
                 // skip duplicated overlaps
-                String pair = String.join("\t", fId, gId);
+                String pair;
+                if ( fId.compareTo(gId) <= 0 ) {
+                    pair = String.join("\t", fId, gId);
+                } else {
+                    pair = String.join("\t", gId, fId);
+                }
                 if ( seen.contains(pair) ) {
                     continue;
                 }
@@ -114,6 +128,7 @@ public class Covered {
                     if ( !covered.containsKey(fId) ) {
                         Map<Integer, IntSpan> tier_of = new HashMap<>();
                         tier_of.put(-1, new IntSpan(1, ovlp.getfLen()));
+                        tier_of.put(0, new IntSpan(1, ovlp.getfLen()));
 
                         for ( int i = 1; i <= coverage; i++ ) {
                             tier_of.put(i, new IntSpan());
@@ -129,6 +144,7 @@ public class Covered {
                     if ( !covered.containsKey(gId) ) {
                         Map<Integer, IntSpan> tier_of = new HashMap<>();
                         tier_of.put(-1, new IntSpan(1, ovlp.getgLen()));
+                        tier_of.put(0, new IntSpan(1, ovlp.getgLen()));
 
                         for ( int i = 1; i <= coverage; i++ ) {
                             tier_of.put(i, new IntSpan());
@@ -149,36 +165,59 @@ public class Covered {
 
         List<String> keys = new ArrayList<>(covered.keySet());
         Collections.sort(keys);
-        for ( String key : keys ) {
-            IntSpan intSpan = covered.get(key).get(coverage);
+        for ( String key
+            : keys ) {
 
-            String line;
-            if ( !wantLongest ) {
-                line = String.format("%s:%s", key, intSpan);
-            } else if ( intSpan.spanSize() <= 1 ) { // empty or one span
-                line = String.format("%s:%s", key, intSpan);
-            } else { // get the longest span
-                int[] ranges = intSpan.ranges().toArray();
+            if ( !wantBaseCov ) {
+                String line;
 
-                List<Integer> spanSizes = new ArrayList<>();
-                for ( int i = 0; i < intSpan.spanSize(); i++ ) {
-                    int spanSize = ranges[i * 2 + 1] - ranges[i * 2] + 1;
-                    spanSizes.add(spanSize);
+                IntSpan intSpan = covered.get(key).get(coverage);
+                if ( !wantLongest ) {
+                    line = String.format("%s:%s", key, intSpan);
+                } else if ( intSpan.spanSize() <= 1 ) { // empty or one span
+                    line = String.format("%s:%s", key, intSpan);
+                } else { // get the longest span
+                    int[] ranges = intSpan.ranges().toArray();
+
+                    List<Integer> spanSizes = new ArrayList<>();
+                    for ( int i = 0; i < intSpan.spanSize(); i++ ) {
+                        int spanSize = ranges[i * 2 + 1] - ranges[i * 2] + 1;
+                        spanSizes.add(spanSize);
+                    }
+
+                    int maxIndex = 0;
+                    for ( int i = 0; i < intSpan.spanSize(); i++ ) {
+                        int spanSize = spanSizes.get(i);
+                        if ( (spanSize > spanSizes.get(maxIndex)) ) {
+                            maxIndex = i;
+                        }
+                    }
+
+                    IntSpan longest = new IntSpan(ranges[maxIndex * 2], ranges[maxIndex * 2 + 1]);
+                    line = String.format("%s:%s", key, longest);
                 }
 
-                int maxIndex = 0;
-                for ( int i = 0; i < intSpan.spanSize(); i++ ) {
-                    int spanSize = spanSizes.get(i);
-                    if ( (spanSize > spanSizes.get(maxIndex)) ) {
-                        maxIndex = i;
+                lines.add(line);
+            } else {
+                Map<Integer, IntSpan> tier_of = covered.get(key);
+
+                Map<Integer, Integer> basecov_of = new HashMap<>();
+                int max_tier = Collections.max(tier_of.keySet());
+                for ( int tier = 0; tier <= max_tier; tier++ ) {
+                    for ( int pos : tier_of.get(tier).elements() ) {
+                        basecov_of.put(pos, tier);
                     }
                 }
 
-                IntSpan longest = new IntSpan(ranges[maxIndex * 2], ranges[maxIndex * 2 + 1]);
-                line = String.format("%s:%s", key, longest);
-            }
+                List<Integer> sortedKeys = new ArrayList<>(basecov_of.keySet());
+                Collections.sort(sortedKeys);
 
-            lines.add(line);
+                for ( int pos :
+                    sortedKeys ) {
+                    String line = String.format("%s\t%d\t%d", key, pos - 1, basecov_of.get(pos));
+                    lines.add(line);
+                }
+            }
         }
 
         Utils.writeLines(outfile, lines);

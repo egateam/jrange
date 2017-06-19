@@ -55,6 +55,16 @@ public class CoveredTest {
         Assert.assertFalse(this.stdoutContent.toString().contains("pac4745_7148:1"), "uncovered region");
     }
 
+    @Test(description = "Test command covered --basecov")
+    public void testExecuteBaseCov() throws Exception {
+        String   fileName1 = Utils.expendResource("1_4.pac.paf.ovlp.tsv");
+        String[] args      = {"covered", fileName1, "--basecov", "--outfile", "stdout"};
+        Cli.main(args);
+
+        Assert.assertEquals(this.stdoutContent.toString().split("\r\n|\r|\n").length, 98105, "line count");
+        Assert.assertTrue(this.stdoutContent.toString().contains("pac4745_7148"), "original names");
+    }
+
     @Test(description = "Test command covered --paf")
     public void testExecutePaf() throws Exception {
         String   fileName1 = Utils.expendResource("11_2.long.paf");
