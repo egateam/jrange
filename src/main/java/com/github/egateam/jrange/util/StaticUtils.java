@@ -51,10 +51,14 @@ public class StaticUtils {
         IntSpan intSpanNew = new IntSpan(begEnd[0], begEnd[1]);
 
         int max_tier = Collections.max(tier_of.keySet());
-        if ( tier_of.get(-1).superset(intSpanNew)
-            && tier_of.get(-1).equals(tier_of.get(max_tier)) ) {
+
+        // reach max coverage in full sequence
+        if ( tier_of.get(-1).equals(tier_of.get(max_tier)) ) {
             return;
         }
+
+        // remove intSpanNew from uncovered regions
+        tier_of.get(0).subtract(intSpanNew);
 
         for ( int i = 1; i <= max_tier; i++ ) {
             IntSpan intSpanI = tier_of.get(i).intersect(intSpanNew);
