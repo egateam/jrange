@@ -13,6 +13,9 @@ import com.github.egateam.IntSpan;
 import com.github.egateam.commons.Ovlp;
 import com.github.egateam.commons.Utils;
 import com.github.egateam.jrange.util.StaticUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,77 +92,91 @@ public class Covered {
         Set<String> seen = new HashSet<>();
         for ( String inFile
             : files ) {
-            List<String> lines = Utils.readLines(inFile);
 
-            for ( String line
-                : lines ) {
-                Ovlp ovlp = new Ovlp();
+            // Don't slurp file contents. inFile can be huge.
+            // List<String> lines = Utils.readLines(inFile);
 
-                if ( isPaf ) {
-                    ovlp.parsePafLine(line);
-                } else {
-                    ovlp.parseOvlpLine(line);
-                }
+            LineIterator it;
+            if ( inFile.toLowerCase().equals("stdin") ) {
+                it = IOUtils.lineIterator(System.in, "utf-8");
+            } else {
+                it = FileUtils.lineIterator(new File(inFile), "utf-8");
+            }
 
-                String fId = ovlp.getfId();
-                String gId = ovlp.getgId();
+            try {
+                while ( it.hasNext() ) {
+                    String line = it.nextLine();
 
-                // ignore self overlapping
-                if ( Objects.equals(fId, gId) ) {
-                    continue;
-                }
+                    Ovlp ovlp = new Ovlp();
 
-                // ignore poor overlaps
-                if ( ovlp.getLen() < minOvlpLen ) {
-                    continue;
-                }
-                if ( ovlp.getIdt() < minOvlpIdt ) {
-                    continue;
-                }
-
-                // skip duplicated overlaps
-                String pair;
-                if ( fId.compareTo(gId) <= 0 ) {
-                    pair = String.join("\t", fId, gId);
-                } else {
-                    pair = String.join("\t", gId, fId);
-                }
-                if ( seen.contains(pair) ) {
-                    continue;
-                }
-                seen.add(pair);
-
-                { // first seq
-                    if ( !covered.containsKey(fId) ) {
-                        Map<Integer, IntSpan> tier_of = new HashMap<>();
-                        tier_of.put(-1, new IntSpan(1, ovlp.getfLen()));
-                        tier_of.put(0, new IntSpan(1, ovlp.getfLen()));
-
-                        for ( int i = 1; i <= coverage; i++ ) {
-                            tier_of.put(i, new IntSpan());
-                        }
-
-                        covered.put(fId, tier_of);
+                    if ( isPaf ) {
+                        ovlp.parsePafLine(line);
+                    } else {
+                        ovlp.parseOvlpLine(line);
                     }
 
-                    StaticUtils.bumpCoverage(covered.get(fId), ovlp.getfB(), ovlp.getfE());
-                }
+                    String fId = ovlp.getfId();
+                    String gId = ovlp.getgId();
 
-                { // second seq
-                    if ( !covered.containsKey(gId) ) {
-                        Map<Integer, IntSpan> tier_of = new HashMap<>();
-                        tier_of.put(-1, new IntSpan(1, ovlp.getgLen()));
-                        tier_of.put(0, new IntSpan(1, ovlp.getgLen()));
-
-                        for ( int i = 1; i <= coverage; i++ ) {
-                            tier_of.put(i, new IntSpan());
-                        }
-
-                        covered.put(gId, tier_of);
+                    // ignore self overlapping
+                    if ( Objects.equals(fId, gId) ) {
+                        continue;
                     }
 
-                    StaticUtils.bumpCoverage(covered.get(gId), ovlp.getgB(), ovlp.getgE());
+                    // ignore poor overlaps
+                    if ( ovlp.getLen() < minOvlpLen ) {
+                        continue;
+                    }
+                    if ( ovlp.getIdt() < minOvlpIdt ) {
+                        continue;
+                    }
+
+                    // skip duplicated overlaps
+                    String pair;
+                    if ( fId.compareTo(gId) <= 0 ) {
+                        pair = String.join("\t", fId, gId);
+                    } else {
+                        pair = String.join("\t", gId, fId);
+                    }
+                    if ( seen.contains(pair) ) {
+                        continue;
+                    }
+                    seen.add(pair);
+
+                    { // first seq
+                        if ( !covered.containsKey(fId) ) {
+                            Map<Integer, IntSpan> tier_of = new HashMap<>();
+                            tier_of.put(-1, new IntSpan(1, ovlp.getfLen()));
+                            tier_of.put(0, new IntSpan(1, ovlp.getfLen()));
+
+                            for ( int i = 1; i <= coverage; i++ ) {
+                                tier_of.put(i, new IntSpan());
+                            }
+
+                            covered.put(fId, tier_of);
+                        }
+
+                        StaticUtils.bumpCoverage(covered.get(fId), ovlp.getfB(), ovlp.getfE());
+                    }
+
+                    { // second seq
+                        if ( !covered.containsKey(gId) ) {
+                            Map<Integer, IntSpan> tier_of = new HashMap<>();
+                            tier_of.put(-1, new IntSpan(1, ovlp.getgLen()));
+                            tier_of.put(0, new IntSpan(1, ovlp.getgLen()));
+
+                            for ( int i = 1; i <= coverage; i++ ) {
+                                tier_of.put(i, new IntSpan());
+                            }
+
+                            covered.put(gId, tier_of);
+                        }
+
+                        StaticUtils.bumpCoverage(covered.get(gId), ovlp.getgB(), ovlp.getgE());
+                    }
                 }
+            } finally {
+                it.close();
             }
         }
 
