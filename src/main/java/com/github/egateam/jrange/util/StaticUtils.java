@@ -3,11 +3,32 @@ package com.github.egateam.jrange.util;
 import com.github.egateam.IntSpan;
 import com.github.egateam.commons.ChrRange;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StaticUtils {
+
+    public static String getJarPath() throws IOException {
+        return new java.io.File(
+            StaticUtils.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .getPath()
+        ).getCanonicalPath();
+    }
+
+    public static String getJarName() throws IOException {
+        return new java.io.File(
+            StaticUtils.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .getPath()
+        ).getName();
+    }
 
     public static void buildChrRange(String line, Map<String, ChrRange> objectOfRange) {
         for ( String part : line.split("\\t") ) {

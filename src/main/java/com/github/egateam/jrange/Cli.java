@@ -25,6 +25,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.jrange.commands.*;
+import com.github.egateam.jrange.util.StaticUtils;
 
 import java.io.IOException;
 
@@ -37,16 +38,6 @@ public class Cli {
     @SuppressWarnings("CanBeFinal")
     @Parameter(names = {"--help", "-h"}, description = "Print this help and quit", help = true)
     private boolean help = false;
-
-    private static String getJarPath() throws IOException {
-        return new java.io.File(
-            Cli.class
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .getPath()
-        ).getCanonicalPath();
-    }
 
     public void execute(String[] args) {
 
@@ -68,7 +59,7 @@ public class Cli {
             }
 
             if ( parsedCommand == null ) {
-                String prompt = String.format("java -jar %s --help", getJarPath());
+                String prompt = String.format("java -jar %s --help", StaticUtils.getJarPath());
                 throw new ParameterException("No command specified. For help, type\n" + prompt);
             }
         } catch ( ParameterException e ) {
