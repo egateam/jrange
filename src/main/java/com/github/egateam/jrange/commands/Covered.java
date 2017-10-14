@@ -96,16 +96,16 @@ public class Covered {
             // Don't slurp file contents. inFile can be huge.
             // List<String> lines = Utils.readLines(inFile);
 
-            LineIterator it;
+            LineIterator iter;
             if ( inFile.toLowerCase().equals("stdin") ) {
-                it = IOUtils.lineIterator(System.in, "utf-8");
+                iter = IOUtils.lineIterator(System.in, "utf-8");
             } else {
-                it = FileUtils.lineIterator(new File(inFile), "utf-8");
+                iter = FileUtils.lineIterator(new File(inFile), "utf-8");
             }
 
             try {
-                while ( it.hasNext() ) {
-                    String line = it.nextLine();
+                while ( iter.hasNext() ) {
+                    String line = iter.nextLine();
 
                     Ovlp ovlp = new Ovlp();
 
@@ -176,7 +176,7 @@ public class Covered {
                     }
                 }
             } finally {
-                it.close();
+                iter.close();
             }
         }
 
