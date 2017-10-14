@@ -42,6 +42,7 @@ public class Cli {
     public void execute(String[] args) {
 
         JCommander jc = new JCommander(this);
+        jc.addCommand("path", new Path());
         jc.addCommand("sort", new Sort());
         jc.addCommand("merge", new Merge());
         jc.addCommand("clean", new Clean());
@@ -73,7 +74,10 @@ public class Cli {
         Object command = jc.getCommands().get(parsedCommand).getObjects().get(0);
 
         try {
-            if ( command instanceof Sort ) {
+            if ( command instanceof Path ) {
+                Path commandNew = (Path) command;
+                commandNew.execute();
+            } else if ( command instanceof Sort ) {
                 Sort commandNew = (Sort) command;
                 commandNew.execute();
             } else if ( command instanceof Merge ) {
