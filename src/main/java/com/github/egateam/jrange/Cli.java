@@ -26,6 +26,8 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.egateam.jrange.commands.*;
 
+import java.io.IOException;
+
 @SuppressWarnings("WeakerAccess")
 @Parameters
 public class Cli {
@@ -36,14 +38,14 @@ public class Cli {
     @Parameter(names = {"--help", "-h"}, description = "Print this help and quit", help = true)
     private boolean help = false;
 
-    private static String getJarName() {
+    private static String getJarPath() throws IOException {
         return new java.io.File(
             Cli.class
                 .getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
                 .getPath()
-        ).getName();
+        ).getCanonicalPath();
     }
 
     public void execute(String[] args) {
@@ -66,7 +68,7 @@ public class Cli {
             }
 
             if ( parsedCommand == null ) {
-                String prompt = String.format("java -jar path/to/%s --help", getJarName());
+                String prompt = String.format("java -jar %s --help", getJarPath());
                 throw new ParameterException("No command specified. For help, type\n" + prompt);
             }
         } catch ( ParameterException e ) {
