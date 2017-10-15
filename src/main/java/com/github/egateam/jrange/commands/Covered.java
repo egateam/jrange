@@ -89,7 +89,7 @@ public class Covered {
         Map<String, Map<Integer, IntSpan>> covered = new HashMap<>();
 
         // load overlaps and build coverages
-        Set<String> seen = new HashSet<>();
+        // Set<String> seen = new HashSet<>();
         for ( String inFile
             : files ) {
 
@@ -131,17 +131,18 @@ public class Covered {
                         continue;
                     }
 
-                    // skip duplicated overlaps
-                    String pair;
-                    if ( fId.compareTo(gId) <= 0 ) {
-                        pair = String.join("\t", fId, gId);
-                    } else {
-                        pair = String.join("\t", gId, fId);
-                    }
-                    if ( seen.contains(pair) ) {
-                        continue;
-                    }
-                    seen.add(pair);
+                    // This HashSet consumes huge memory on large data sets
+                    // // skip duplicated overlaps
+                    // String pair;
+                    // if ( fId.compareTo(gId) <= 0 ) {
+                    //     pair = String.join("\t", fId, gId);
+                    // } else {
+                    //     pair = String.join("\t", gId, fId);
+                    // }
+                    // if ( seen.contains(pair) ) {
+                    //     continue;
+                    // }
+                    // seen.add(pair);
 
                     { // first seq
                         if ( !covered.containsKey(fId) ) {
