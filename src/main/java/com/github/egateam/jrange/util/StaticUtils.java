@@ -53,60 +53,6 @@ public class StaticUtils {
         }
     }
 
-    public static int[] begEnd(int beg, int end) {
-        if ( beg > end ) {
-            int temp = beg;
-            beg = end;
-            end = temp;
-        }
-
-        if ( beg == 0 ) {
-            beg = 1;
-        }
-
-        return new int[]{beg, end};
-    }
-
-    public static void bumpCoverage(Map<Integer, IntSpan> tier_of, int beg, int end) {
-        int[]   begEnd     = StaticUtils.begEnd(beg, end);
-        IntSpan intSpanNew = new IntSpan(begEnd[0], begEnd[1]);
-
-        int max_tier = Collections.max(tier_of.keySet());
-
-        // reach max coverage in full sequence
-        if ( tier_of.get(-1).equals(tier_of.get(max_tier)) ) {
-            return;
-        }
-
-        // remove intSpanNew from uncovered regions
-        tier_of.get(0).subtract(intSpanNew);
-
-        for ( int i = 1; i <= max_tier; i++ ) {
-            IntSpan intSpanI = tier_of.get(i).intersect(intSpanNew);
-            tier_of.get(i).add(intSpanNew);
-
-            int j = i + 1;
-            if ( j > max_tier ) {
-                break;
-            }
-
-            intSpanNew = intSpanI.copy();
-        }
-    }
-
-    /**
-     * @param tier_of tiers of covered regions
-     */
-    public static void uniqCoverage(Map<Integer, IntSpan> tier_of) {
-        int max_tier = Collections.max(tier_of.keySet());
-
-        for ( int i = 1; i < max_tier; i++ ) {
-            IntSpan intSpanCur = tier_of.get(i);
-            IntSpan intSpanNext = tier_of.get(i + 1);
-            intSpanCur.subtract(intSpanNext);
-        }
-    }
-
     public static List<String> sortLinks(List<String> lines) {
 
         Map<String, ChrRange> objectOfRange = new HashMap<>();

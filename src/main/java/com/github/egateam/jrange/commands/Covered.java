@@ -90,8 +90,7 @@ public class Covered {
 
         // load overlaps and build coverages
         // Set<String> seen = new HashSet<>();
-        for ( String inFile
-            : files ) {
+        for ( String inFile : files ) {
 
             // Don't slurp file contents. inFile can be huge.
             // List<String> lines = Utils.readLines(inFile);
@@ -157,7 +156,7 @@ public class Covered {
                             covered.put(fId, tier_of);
                         }
 
-                        StaticUtils.bumpCoverage(covered.get(fId), ovlp.getfB(), ovlp.getfE());
+                        Utils.bumpCoverage(covered.get(fId), ovlp.getfB(), ovlp.getfE());
                     }
 
                     { // second seq
@@ -173,7 +172,7 @@ public class Covered {
                             covered.put(gId, tier_of);
                         }
 
-                        StaticUtils.bumpCoverage(covered.get(gId), ovlp.getgB(), ovlp.getgE());
+                        Utils.bumpCoverage(covered.get(gId), ovlp.getgB(), ovlp.getgE());
                     }
                 }
             } finally {
@@ -188,12 +187,11 @@ public class Covered {
 
         List<String> keys = new ArrayList<>(covered.keySet());
         Collections.sort(keys);
-        for ( String key
-            : keys ) {
+        for ( String key : keys ) {
 
             if ( wantBaseCov ) {
                 Map<Integer, IntSpan> tier_of = covered.get(key);
-                StaticUtils.uniqCoverage(tier_of);
+                Utils.uniqCoverage(tier_of);
 
                 Map<Integer, Integer> basecov_of = new HashMap<>();
                 int                   max_tier   = Collections.max(tier_of.keySet());
@@ -206,14 +204,13 @@ public class Covered {
                 List<Integer> sortedKeys = new ArrayList<>(basecov_of.keySet());
                 Collections.sort(sortedKeys);
 
-                for ( int pos :
-                    sortedKeys ) {
+                for ( int pos : sortedKeys ) {
                     String line = String.format("%s\t%d\t%d", key, pos - 1, basecov_of.get(pos));
                     lines.add(line);
                 }
             } else if ( wantMeanCov ) {
                 Map<Integer, IntSpan> tier_of = covered.get(key);
-                StaticUtils.uniqCoverage(tier_of);
+                Utils.uniqCoverage(tier_of);
 
                 int max_tier = Collections.max(tier_of.keySet());
                 int totalLen = tier_of.get(-1).size();
