@@ -29,6 +29,13 @@ Usage: <main class> [options] [command] [command options]
        Print this help and quit
        Default: false
   Commands:
+    path      Replace ranges within links, incorporate hit strands and remove nested links
+      Usage: path [options]
+        Options:
+          --file
+             output filename instead of full path
+             Default: false
+
     sort      Replace ranges within links, incorporate hit strands and remove nested links
       Usage: sort [options] <infiles>
         Options:
@@ -62,11 +69,38 @@ Usage: <main class> [options] [command] [command options]
              Verbose mode.
              Default: false
 
-    connect      Connect range links in paralog graph
+    connect      (Unfinished) Connect range links in paralog graph
       Usage: connect [options] <infiles>
         Options:
           --outfile, -o
              Output filename. [stdout] for screen.
+
+    covered      Covered regions from .ovlp.tsv files
+      Usage: covered [options] <infiles>
+        Options:
+          --basecov
+             coverage per base location
+             Default: false
+          --coverage, -c
+             minimal coverage
+             Default: 3
+          --idt, -i
+             minimal length of overlaps
+             Default: 0.0
+          --len, -l
+             minimal length of overlaps
+             Default: 1000
+          --longest
+             only keep the longest span
+             Default: false
+          --meancov
+             mean coverage per base location
+             Default: false
+          --outfile, -o
+             Output filename. [stdout] for screen.
+          --paf
+             input format as PAF
+             Default: false
 
 ```
 
@@ -108,8 +142,8 @@ jrange sort src/test/resources/II.links.tsv -o stdout
 
 jrange merge src/test/resources/II.links.tsv -o stdout
 
-cat src/test/resources/I.links.tsv \
-    | jrange merge stdin -o stdout
+cat src/test/resources/I.links.tsv |
+    jrange merge stdin -o stdout
 
 jrange clean src/test/resources/II.sort.tsv -o stdout
 
@@ -132,6 +166,7 @@ java -jar target/jrange-*-jar-with-dependencies.jar \
 # (Unfinished)
 #jrange connect src/test/resources/II.clean.tsv -o stdout
 #jarnge reduce
+
 ```
 
 # COMPARISON

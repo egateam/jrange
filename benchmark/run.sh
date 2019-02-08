@@ -31,8 +31,7 @@ log_debug () {
 cpanm App::Rangeops
 
 COMMAND_TIME="command time -v"
-if [[ `uname` == 'Darwin' ]];
-then
+if [[ `uname` == 'Darwin' ]]; then
     COMMAND_TIME="command time -l"
 fi
 
