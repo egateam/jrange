@@ -12,7 +12,6 @@ import com.beust.jcommander.Parameters;
 import com.github.egateam.IntSpan;
 import com.github.egateam.commons.Ovlp;
 import com.github.egateam.commons.Utils;
-import com.github.egateam.jrange.util.StaticUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
