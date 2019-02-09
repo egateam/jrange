@@ -151,17 +151,13 @@ jrange clean src/test/resources/II.sort.tsv --bundle 500 -o stdout
 
 jrange clean src/test/resources/II.sort.tsv -r src/test/resources/II.merge.tsv -o stdout
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    covered src/test/resources/1_4.pac.paf.ovlp.tsv -o stdout
+jrange covered src/test/resources/1_4.pac.paf.ovlp.tsv -o stdout
     
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    covered src/test/resources/1_4.pac.paf.ovlp.tsv --basecov -o stdout
+jrange covered src/test/resources/1_4.pac.paf.ovlp.tsv --basecov -o stdout
     
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    covered src/test/resources/1_4.pac.paf.ovlp.tsv --meancov -o stdout
+jrange covered src/test/resources/1_4.pac.paf.ovlp.tsv --meancov -o stdout
 
-java -jar target/jrange-*-jar-with-dependencies.jar \
-    covered src/test/resources/11_2.long.paf --paf -o stdout
+jrange covered src/test/resources/11_2.long.paf --paf -o stdout
 
 # (Unfinished)
 #jrange connect src/test/resources/II.clean.tsv -o stdout
