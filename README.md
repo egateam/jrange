@@ -173,105 +173,127 @@ jrange covered src/test/resources/11_2.long.paf --paf -o stdout
 bash benchmark/run.sh
 ```
 
-* OSX 10.11 i7-6700k oracleJDK8
+* OSX 10.14 i7-8700k oracleJDK8
 
 ```
+==> merge <==
 ==> jrange merge lastz blast
-        3.86 real         4.60 user         0.67 sys
-2226823168  maximum resident set size
+        3.76 real         4.30 user         0.67 sys
+2235318272  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    546737  page reclaims
+    547469  page reclaims
          2  page faults
          0  swaps
          0  block input operations
-         3  block output operations
-         0  messages sent
-         0  messages received
-         3  signals received
-        57  voluntary context switches
-      4757  involuntary context switches
-==> App::Rangeops merge lastz blast
-      180.09 real       521.59 user         0.92 sys
-  78188544  maximum resident set size
-         0  average shared memory size
-         0  average unshared data size
-         0  average unshared stack size
-    200231  page reclaims
-        60  page faults
-         0  swaps
-        35  block input operations
-        23  block output operations
-       140  messages sent
-       131  messages received
-        20  signals received
-       445  voluntary context switches
-    121331  involuntary context switches
-==> jrange clean sort.clean
-        2.46 real         3.65 user         0.38 sys
-1151385600  maximum resident set size
-         0  average shared memory size
-         0  average unshared data size
-         0  average unshared stack size
-    282793  page reclaims
-         2  page faults
-         0  swaps
-         0  block input operations
-         2  block output operations
+         0  block output operations
          0  messages sent
          0  messages received
          1  signals received
-         0  voluntary context switches
-      5279  involuntary context switches
-==> App::Rangeops clean sort.clean
-       77.23 real        77.07 user         0.11 sys
-  83320832  maximum resident set size
+       107  voluntary context switches
+      4464  involuntary context switches
+==> linkr merge lastz blast
+       11.44 real        11.42 user         0.00 sys
+  10895360  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-     37848  page reclaims
+      2380  page reclaims
+       290  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+         0  messages sent
+         0  messages received
+         0  signals received
+         2  voluntary context switches
+       663  involuntary context switches
+==> rangeops merge lastz blast
+      107.90 real       298.21 user         0.83 sys
+  82219008  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+    196940  page reclaims
+        98  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+       140  messages sent
+       131  messages received
+         0  signals received
+       326  voluntary context switches
+    133601  involuntary context switches
+
+==> clean <==
+==> jrange clean sort.clean
+        2.39 real         3.49 user         0.40 sys
+1148899328  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+    282011  page reclaims
+       210  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+         0  messages sent
+         0  messages received
+         1  signals received
+         6  voluntary context switches
+      8064  involuntary context switches
+==> rangeops clean sort.clean
+       49.55 real        49.41 user         0.08 sys
+  85766144  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+     25667  page reclaims
          0  page faults
          0  swaps
          0  block input operations
-         2  block output operations
+         0  block output operations
          0  messages sent
          0  messages received
-        20  signals received
-        60  voluntary context switches
-      6857  involuntary context switches
+         0  signals received
+         4  voluntary context switches
+      8234  involuntary context switches
+
+==> clean bundle <==
 ==> jrange clean bundle sort.clean
-        5.07 real         6.67 user         0.68 sys
-2235871232  maximum resident set size
+        4.22 real         5.89 user         0.39 sys
+1168412672  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    549744  page reclaims
+    287394  page reclaims
          0  page faults
          0  swaps
          0  block input operations
-         3  block output operations
+         0  block output operations
          0  messages sent
          0  messages received
-         4  signals received
+         3  signals received
          0  voluntary context switches
-      6231  involuntary context switches
-==> App::Rangeops clean bundle sort.clean
-      123.19 real       122.97 user         0.15 sys
-  91852800  maximum resident set size
+      5565  involuntary context switches
+==> rangeops clean bundle sort.clean
+       78.84 real        78.64 user         0.10 sys
+  90374144  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-     39960  page reclaims
+     26984  page reclaims
          0  page faults
          0  swaps
          0  block input operations
-         2  block output operations
+         0  block output operations
          0  messages sent
          0  messages received
-        20  signals received
-        59  voluntary context switches
-     10483  involuntary context switches
+         0  signals received
+         4  voluntary context switches
+     13327  involuntary context switches
+
 ```
 
 # AUTHOR

@@ -42,6 +42,7 @@ cd ${BASE_DIR}
 #----------------------------#
 # Run
 #----------------------------#
+log_warn "merge"
 log_info "jrange merge lastz blast"
 ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     merge \
@@ -51,6 +52,15 @@ ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     | sort \
     > jmerge.tsv.tmp
 
+log_info "linkr merge lastz blast"
+${COMMAND_TIME} linkr \
+    merge \
+    -o stdout -c 0.95 \
+    links.lastz.tsv \
+    links.blast.tsv \
+    | sort \
+    > rmerge.tsv.tmp
+
 log_info "rangeops merge lastz blast"
 ${COMMAND_TIME} rangeops \
     merge \
@@ -59,7 +69,9 @@ ${COMMAND_TIME} rangeops \
     links.blast.tsv \
     | sort \
     > pmerge.tsv.tmp
+echo >&2
 
+log_warn "clean"
 log_info "jrange clean sort.clean"
 ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     clean \
@@ -73,7 +85,9 @@ ${COMMAND_TIME} rangeops \
     -o stdout \
     sort.clean.tsv \
     > pclean.tsv.tmp
+echo >&2
 
+log_warn "clean bundle"
 log_info "jrange clean bundle sort.clean"
 ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     clean \
