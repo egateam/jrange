@@ -79,6 +79,13 @@ ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     sort.clean.tsv \
     > jclean.tsv.tmp
 
+log_info "linkr clean sort.clean"
+${COMMAND_TIME} linkr \
+    clean \
+    -o stdout \
+    sort.clean.tsv \
+    > rclean.tsv.tmp
+
 log_info "rangeops clean sort.clean"
 ${COMMAND_TIME} rangeops \
     clean \
@@ -95,6 +102,14 @@ ${COMMAND_TIME} java -jar ../target/jrange-*-jar-with-dependencies.jar \
     --bundle 500 \
     sort.clean.tsv \
     > jbundle.tsv.tmp
+
+log_info "linkr clean bundle sort.clean"
+${COMMAND_TIME} linkr \
+    clean \
+    -o stdout \
+    --bundle 500 \
+    sort.clean.tsv \
+    > rbundle.tsv.tmp
 
 log_info "rangeops clean bundle sort.clean"
 ${COMMAND_TIME} rangeops \

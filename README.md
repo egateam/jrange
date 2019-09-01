@@ -178,29 +178,29 @@ bash benchmark/run.sh
 ```
 ==> merge <==
 ==> jrange merge lastz blast
-        3.76 real         4.30 user         0.67 sys
-2235318272  maximum resident set size
+        3.82 real         4.32 user         0.72 sys
+2232799232  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    547469  page reclaims
-         2  page faults
+    546831  page reclaims
+         0  page faults
          0  swaps
          0  block input operations
          0  block output operations
          0  messages sent
          0  messages received
          1  signals received
-       107  voluntary context switches
-      4464  involuntary context switches
+        69  voluntary context switches
+      6125  involuntary context switches
 ==> linkr merge lastz blast
-       11.44 real        11.42 user         0.00 sys
-  10895360  maximum resident set size
+       11.68 real        11.62 user         0.03 sys
+  10772480  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-      2380  page reclaims
-       290  page faults
+      2344  page reclaims
+       295  page faults
          0  swaps
          0  block input operations
          0  block output operations
@@ -208,14 +208,14 @@ bash benchmark/run.sh
          0  messages received
          0  signals received
          2  voluntary context switches
-       663  involuntary context switches
+      1500  involuntary context switches
 ==> rangeops merge lastz blast
-      107.90 real       298.21 user         0.83 sys
-  82219008  maximum resident set size
+      109.04 real       301.83 user         1.68 sys
+  81469440  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    196940  page reclaims
+    192907  page reclaims
         98  page faults
          0  swaps
          0  block input operations
@@ -223,17 +223,17 @@ bash benchmark/run.sh
        140  messages sent
        131  messages received
          0  signals received
-       326  voluntary context switches
-    133601  involuntary context switches
+       338  voluntary context switches
+    320048  involuntary context switches
 
 ==> clean <==
 ==> jrange clean sort.clean
-        2.39 real         3.49 user         0.40 sys
-1148899328  maximum resident set size
+        2.45 real         3.55 user         0.42 sys
+1151713280  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    282011  page reclaims
+    282674  page reclaims
        210  page faults
          0  swaps
          0  block input operations
@@ -241,15 +241,31 @@ bash benchmark/run.sh
          0  messages sent
          0  messages received
          1  signals received
-         6  voluntary context switches
-      8064  involuntary context switches
-==> rangeops clean sort.clean
-       49.55 real        49.41 user         0.08 sys
-  85766144  maximum resident set size
+         3  voluntary context switches
+      5934  involuntary context switches
+==> linkr clean sort.clean
+        3.36 real         3.33 user         0.01 sys
+  20246528  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-     25667  page reclaims
+      4935  page reclaims
+        17  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+         0  messages sent
+         0  messages received
+         0  signals received
+         0  voluntary context switches
+       961  involuntary context switches
+==> rangeops clean sort.clean
+       52.82 real        52.42 user         0.24 sys
+  85401600  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+     25222  page reclaims
          0  page faults
          0  swaps
          0  block input operations
@@ -258,16 +274,16 @@ bash benchmark/run.sh
          0  messages received
          0  signals received
          4  voluntary context switches
-      8234  involuntary context switches
+     13771  involuntary context switches
 
 ==> clean bundle <==
 ==> jrange clean bundle sort.clean
-        4.22 real         5.89 user         0.39 sys
-1168412672  maximum resident set size
+        4.77 real         6.32 user         0.61 sys
+1808756736  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-    287394  page reclaims
+    443476  page reclaims
          0  page faults
          0  swaps
          0  block input operations
@@ -276,14 +292,30 @@ bash benchmark/run.sh
          0  messages received
          3  signals received
          0  voluntary context switches
-      5565  involuntary context switches
-==> rangeops clean bundle sort.clean
-       78.84 real        78.64 user         0.10 sys
-  90374144  maximum resident set size
+      7896  involuntary context switches
+==> linkr clean bundle sort.clean
+        6.65 real         6.52 user         0.06 sys
+  32636928  maximum resident set size
          0  average shared memory size
          0  average unshared data size
          0  average unshared stack size
-     26984  page reclaims
+      7974  page reclaims
+         3  page faults
+         0  swaps
+         0  block input operations
+         0  block output operations
+         0  messages sent
+         0  messages received
+         0  signals received
+         0  voluntary context switches
+     14738  involuntary context switches
+==> rangeops clean bundle sort.clean
+       82.68 real        82.10 user         0.34 sys
+  89927680  maximum resident set size
+         0  average shared memory size
+         0  average unshared data size
+         0  average unshared stack size
+     26459  page reclaims
          0  page faults
          0  swaps
          0  block input operations
@@ -292,8 +324,7 @@ bash benchmark/run.sh
          0  messages received
          0  signals received
          4  voluntary context switches
-     13327  involuntary context switches
-
+     35064  involuntary context switches
 ```
 
 # AUTHOR
